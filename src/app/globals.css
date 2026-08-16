@@ -112,11 +112,13 @@ html[lang="ar"] {
   --font-family-label: var(--font-noto-arabic), sans-serif;
 }
 
-/* Arabic script has no case and letter-tracking distorts joining glyphs */
-html[lang="ar"] .label-caps,
-html[lang="ar"] [class*="text-label-caps"] {
+/* Arabic script has no case and letter-tracking distorts joining glyphs:
+   neutralize uppercase/tracking utilities wherever they land on ar routes. */
+html[lang="ar"] [class*="text-label-caps"],
+html[lang="ar"] .uppercase,
+html[lang="ar"] [class*="tracking-"] {
   text-transform: none;
-  letter-spacing: 0;
+  letter-spacing: normal;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -125,4 +127,72 @@ html[lang="ar"] [class*="text-label-caps"] {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Self-hosted Material Symbols Outlined (variable font: wght, FILL, GRAD, opsz axes) */
+@font-face {
+  font-family: "Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 100 700;
+  font-display: swap;
+  src: url("/fonts/material-symbols-outlined.woff2") format("woff2");
+}
+
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Editorial checkbox: square outline, fills solid black + checkmark when checked */
+.editorial-checkbox {
+  appearance: none;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border: 1px solid var(--color-outline);
+  background-color: transparent;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.editorial-checkbox:checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.editorial-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  inset-inline-start: 6px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--color-on-primary);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Editorial form inputs: hairline bottom border, no radius, transparent bg */
+.input-editorial {
+  border: none;
+  border-bottom: 1px solid var(--color-outline);
+  background-color: transparent;
+  padding: 8px 0;
+  outline: none;
+  box-shadow: none;
+  border-radius: 0;
+  width: 100%;
+}
+.input-editorial:focus {
+  border-bottom-color: var(--color-primary);
 }
