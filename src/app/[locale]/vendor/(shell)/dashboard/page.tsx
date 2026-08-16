@@ -89,7 +89,7 @@ export default async function VendorDashboardPage({
         {t("greeting", { name: vendor.brandName })}
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         <StatCard
           label={t("totalRevenue")}
           value={formatCurrency(totalRevenueAgg._sum.total?.toString() ?? "0", vendor.currency, locale)}

@@ -108,7 +108,7 @@ export default async function VendorAnalyticsPage({
     <div className="px-margin-mobile md:px-margin-desktop py-12 max-w-container-max">
       <h1 className="font-display text-headline-lg text-primary mb-12">{t("title")}</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         <StatCard label={t("totalRevenue")} value={formatCurrency(totalRevenue, vendor.currency, locale)} icon="account_balance_wallet" />
         <StatCard label={t("totalOrders")} value={String(totalOrders)} icon="receipt_long" />
         <StatCard label={t("aov")} value={formatCurrency(aov, vendor.currency, locale)} icon="trending_up" />

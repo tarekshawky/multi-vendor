@@ -70,14 +70,14 @@ export default async function VendorPromotionsPage({
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div className="bg-surface-container-lowest border border-outline-variant/20 p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="bg-surface-container-lowest border border-outline-variant/20 p-6 min-w-0">
           <p className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
             {t("activePromotions")}
           </p>
           <p className="font-headline-lg text-headline-lg text-primary mt-2">{activeCount}</p>
         </div>
-        <div className="bg-surface-container-lowest border border-outline-variant/20 p-6">
+        <div className="bg-surface-container-lowest border border-outline-variant/20 p-6 min-w-0">
           <p className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
             {t("totalValueIssued")}
           </p>
@@ -85,11 +85,11 @@ export default async function VendorPromotionsPage({
             {formatCurrency(totalValueAgg._sum.discountAmount?.toString() ?? "0", vendor.currency, locale)}
           </p>
         </div>
-        <div className="bg-surface-container-lowest border border-outline-variant/20 p-6">
+        <div className="bg-surface-container-lowest border border-outline-variant/20 p-6 min-w-0">
           <p className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
             {t("topPerforming")}
           </p>
-          <p className="font-headline-lg text-headline-lg text-primary mt-2">
+          <p className="font-headline-lg text-headline-lg text-primary mt-2 wrap-break-word">
             {promoCodes[0]?.code ?? "—"}
           </p>
         </div>
@@ -108,13 +108,13 @@ export default async function VendorPromotionsPage({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
           {promoCodes.map((promo) => (
-            <div key={promo.id} className="bg-surface-container-lowest border border-outline-variant/20 p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <p className="font-headline-sm text-headline-sm text-primary">{promo.code}</p>
-                  <p className="text-sm text-on-surface-variant">{promo.title}</p>
+            <div key={promo.id} className="min-w-0 bg-surface-container-lowest border border-outline-variant/20 p-6">
+              <div className="flex items-start justify-between gap-2 mb-4">
+                <div className="min-w-0">
+                  <p className="font-headline-sm text-headline-sm text-primary truncate">{promo.code}</p>
+                  <p className="text-sm text-on-surface-variant truncate">{promo.title}</p>
                 </div>
-                <StatusPill label={t(`status${promo.status}`)} tone={promoStatusTone(promo.status)} />
+                <StatusPill label={t(`status${promo.status}`)} tone={promoStatusTone(promo.status)} className="shrink-0" />
               </div>
               <p className="font-body-md text-primary mb-1">{discountLabel(promo)}</p>
               {promo.minOrderValue && (

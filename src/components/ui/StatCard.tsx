@@ -14,14 +14,14 @@ export function StatCard({ label, value, icon, trend, inverted = false, classNam
   return (
     <div
       className={cn(
-        "flex flex-col justify-between gap-6 p-8 border",
+        "flex min-w-0 flex-col justify-between gap-6 p-8 border",
         inverted
           ? "bg-primary text-on-primary border-primary"
           : "bg-surface-container-lowest text-primary border-outline-variant/20",
         className,
       )}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <span
           className={cn(
             "font-label-caps text-label-caps uppercase tracking-widest",
@@ -31,11 +31,11 @@ export function StatCard({ label, value, icon, trend, inverted = false, classNam
           {label}
         </span>
         {icon && (
-          <Icon name={icon} className={inverted ? "text-on-primary/70" : "text-on-surface-variant"} />
+          <Icon name={icon} className={cn("shrink-0", inverted ? "text-on-primary/70" : "text-on-surface-variant")} />
         )}
       </div>
-      <div>
-        <div className="font-headline-lg text-headline-lg">{value}</div>
+      <div className="min-w-0">
+        <div className="font-headline-lg text-headline-lg wrap-break-word">{value}</div>
         {trend && (
           <div
             className={cn(

@@ -83,7 +83,7 @@ export default async function PromoAnalyticsPage({
       <Breadcrumb items={[{ label: t("promotions"), href: "/vendor/promotions" }, { label: promo.code }]} />
       <h1 className="font-display text-headline-lg text-primary mt-6 mb-12">{promo.code}</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         <StatCard label={t("totalRevenue")} value={formatCurrency(totalRevenue, vendor.currency, locale)} icon="account_balance_wallet" />
         <StatCard
           label={t("redemptions")}
