@@ -1,5 +1,25 @@
 {
+  "Nav": {
+    "designers": "Designers",
+    "collections": "Collections",
+    "editorial": "Editorial",
+    "newArrivals": "New Arrivals",
+    "search": "Search",
+    "profile": "Profile",
+    "bag": "Shopping Bag",
+    "menu": "Menu"
+  },
+  "Footer": {
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "careers": "Careers",
+    "contact": "Contact",
+    "shipping": "Shipping",
+    "copyright": "© {year} VOGUE-CHIC MARKETPLACE. ALL RIGHTS RESERVED."
+  },
   "Home": {
-    "title": "The New Silhouette"
+    "heroTitle": "The New Silhouette",
+    "heroDescription": "Embrace the season's boldest architectural cuts and refined textures. A curated selection for the modern purist.",
+    "heroCta": "Shop New Season"
   }
 }
