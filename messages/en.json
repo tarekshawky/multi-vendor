@@ -145,5 +145,72 @@
     "invalidCredentials": "Incorrect email or password.",
     "invalidInput": "Please fill in all fields (password must be at least 8 characters).",
     "emailTaken": "An account with this email already exists."
+  },
+  "VendorOrders": {
+    "title": "Orders",
+    "statusALL": "All",
+    "statusPENDING": "Pending",
+    "statusPROCESSING": "Processing",
+    "statusSHIPPED": "Shipped",
+    "statusDELIVERED": "Delivered",
+    "statusCANCELLED": "Cancelled",
+    "empty": "No orders yet.",
+    "orderId": "Order ID",
+    "customer": "Customer",
+    "date": "Date",
+    "value": "Value",
+    "status": "Status"
+  },
+  "OrderDetail": {
+    "orders": "Orders",
+    "status": "Status",
+    "note": "Note (optional)",
+    "updateStatus": "Update Status",
+    "itemsOrdered": "Items Ordered",
+    "qty": "Qty",
+    "orderHistory": "Order History",
+    "customer": "Customer",
+    "shippingAddress": "Shipping Address",
+    "paymentSummary": "Payment Summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "tax": "Tax",
+    "total": "Total",
+    "cardEnding": "Card ending in {last4}"
+  },
+  "VendorCustomers": {
+    "title": "Customers",
+    "customer": "Customer",
+    "email": "Email",
+    "orders": "Orders",
+    "lifetimeValue": "Lifetime Value",
+    "empty": "No customers yet."
+  },
+  "CustomerProfile": {
+    "message": "Message",
+    "styleArchitecture": "Style Architecture",
+    "aesthetic": "Aesthetic",
+    "materials": "Favored Materials",
+    "sizing": "Sizing Profile",
+    "sizingTops": "Tops {size}",
+    "sizingBottoms": "Bottoms {size}",
+    "sizingShoes": "Shoes {size}",
+    "engagementMetrics": "Engagement Metrics",
+    "lifetimeValue": "Lifetime Value",
+    "memberSince": "Member Since",
+    "aov": "Avg. Order Value",
+    "acquisitionHistory": "Acquisition History",
+    "noPurchases": "No purchases yet.",
+    "curationNotes": "Curation Notes",
+    "addNotePlaceholder": "Add a private note about this client...",
+    "addNote": "Add Note"
+  },
+  "VendorMessages": {
+    "title": "Messages",
+    "empty": "No conversations yet.",
+    "selectConversation": "Select a conversation to view messages.",
+    "viewOrder": "View Order",
+    "typeMessage": "Type a message...",
+    "send": "Send"
   }
 }

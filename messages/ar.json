@@ -145,5 +145,72 @@
     "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
     "invalidInput": "يرجى تعبئة جميع الحقول (يجب ألا تقل كلمة المرور عن 8 أحرف).",
     "emailTaken": "يوجد حساب بهذا البريد الإلكتروني بالفعل."
+  },
+  "VendorOrders": {
+    "title": "الطلبات",
+    "statusALL": "الكل",
+    "statusPENDING": "معلقة",
+    "statusPROCESSING": "قيد المعالجة",
+    "statusSHIPPED": "تم الشحن",
+    "statusDELIVERED": "تم التسليم",
+    "statusCANCELLED": "ملغاة",
+    "empty": "لا توجد طلبات بعد.",
+    "orderId": "رقم الطلب",
+    "customer": "العميل",
+    "date": "التاريخ",
+    "value": "القيمة",
+    "status": "الحالة"
+  },
+  "OrderDetail": {
+    "orders": "الطلبات",
+    "status": "الحالة",
+    "note": "ملاحظة (اختياري)",
+    "updateStatus": "تحديث الحالة",
+    "itemsOrdered": "العناصر المطلوبة",
+    "qty": "الكمية",
+    "orderHistory": "سجل الطلب",
+    "customer": "العميل",
+    "shippingAddress": "عنوان الشحن",
+    "paymentSummary": "ملخص الدفع",
+    "subtotal": "الإجمالي الفرعي",
+    "shipping": "الشحن",
+    "tax": "الضريبة",
+    "total": "الإجمالي",
+    "cardEnding": "بطاقة تنتهي بـ {last4}"
+  },
+  "VendorCustomers": {
+    "title": "العملاء",
+    "customer": "العميل",
+    "email": "البريد الإلكتروني",
+    "orders": "الطلبات",
+    "lifetimeValue": "القيمة الدائمة",
+    "empty": "لا يوجد عملاء بعد."
+  },
+  "CustomerProfile": {
+    "message": "مراسلة",
+    "styleArchitecture": "هوية الأسلوب",
+    "aesthetic": "الطابع الجمالي",
+    "materials": "الخامات المفضلة",
+    "sizing": "ملف المقاسات",
+    "sizingTops": "العلوي {size}",
+    "sizingBottoms": "السفلي {size}",
+    "sizingShoes": "الأحذية {size}",
+    "engagementMetrics": "مقاييس التفاعل",
+    "lifetimeValue": "القيمة الدائمة",
+    "memberSince": "عضو منذ",
+    "aov": "متوسط قيمة الطلب",
+    "acquisitionHistory": "سجل المشتريات",
+    "noPurchases": "لا توجد مشتريات بعد.",
+    "curationNotes": "ملاحظات التنسيق",
+    "addNotePlaceholder": "أضيفي ملاحظة خاصة عن هذا العميل...",
+    "addNote": "إضافة ملاحظة"
+  },
+  "VendorMessages": {
+    "title": "الرسائل",
+    "empty": "لا توجد محادثات بعد.",
+    "selectConversation": "اختاري محادثة لعرض الرسائل.",
+    "viewOrder": "عرض الطلب",
+    "typeMessage": "اكتبي رسالة...",
+    "send": "إرسال"
   }
 }
