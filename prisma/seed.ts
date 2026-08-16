@@ -1,12 +1,13 @@
 import bcrypt from "bcryptjs";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { stockImages, unsplash } from "../src/lib/stock-images";
+import { stockImages } from "../src/lib/stock-images";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
-const img = (key: keyof typeof stockImages, w = 1200) => unsplash(stockImages[key], { w });
+// Store bare base URLs — pages apply sizing/query params via unsplash() at render time.
+const img = (key: keyof typeof stockImages) => stockImages[key];
 
 async function main() {
   const passwordHash = await bcrypt.hash("password123", 10);
@@ -31,9 +32,9 @@ async function main() {
     brandName: "Maison Elite",
     tagline: "Editorial luxury, uncompromising craft.",
     bio: "Maison Elite crafts architectural silhouettes for the modern purist, blending heritage tailoring with avant-garde textures. Founded on the principle that restraint is the ultimate form of elegance.",
-    logoImage: img("darkPortrait", 200),
-    heroImage: img("editorialBlazer", 1920),
-    coverImage: img("boutiqueInterior", 1600),
+    logoImage: img("darkPortrait"),
+    heroImage: img("editorialBlazer"),
+    coverImage: img("boutiqueInterior"),
     contactEmail: "concierge@maisonelite.com",
     phone: "+1 (212) 555-0142",
     hqAddress: "24 Rue de la Mode, New York, NY 10012",
@@ -56,9 +57,9 @@ async function main() {
     brandName: "ShipLuxe",
     tagline: "Considered pieces, delivered with care.",
     bio: "ShipLuxe curates a refined edit of resort and everyday luxury essentials for the discerning traveler.",
-    logoImage: img("portraitMale2", 200),
-    heroImage: img("whiteDress", 1920),
-    coverImage: img("neutralBag", 1600),
+    logoImage: img("portraitMale2"),
+    heroImage: img("whiteDress"),
+    coverImage: img("neutralBag"),
     contactEmail: "hello@shipluxe.com",
     phone: "+33 1 55 55 01 42",
     hqAddress: "12 Avenue Montaigne, Paris, 75008",
@@ -78,7 +79,7 @@ async function main() {
     create: { email: "elena.vance@example.com", passwordHash, name: "Elena Vance", role: "CUSTOMER" },
   });
   const elenaProfileData = {
-    avatar: img("portraitFemale1", 200),
+    avatar: img("portraitFemale1"),
     vipTier: "VIP" as const,
     bio: "Longtime patron of avant-garde tailoring and considered resort wear. Prefers architectural silhouettes in neutral palettes.",
     phone: "+1 (917) 555-0110",
@@ -99,7 +100,7 @@ async function main() {
     create: { email: "julian.cross@example.com", passwordHash, name: "Julian Cross", role: "CUSTOMER" },
   });
   const julianProfileData = {
-    avatar: img("portraitMale1", 200),
+    avatar: img("portraitMale1"),
     vipTier: "ELITE" as const,
     bio: "Collector of tailored outerwear and considered accessories.",
     phone: "+1 (646) 555-0198",
@@ -122,8 +123,8 @@ async function main() {
       name: "Noir Obscur",
       season: "Fall/Winter 2024",
       editorialDescription: "A study in architectural darkness — structural coats and sculptural silhouettes rendered in obsidian and charcoal.",
-      heroImage: img("editorialBlazer", 1600),
-      campaignImages: [img("darkPortrait", 1200), img("boutiqueInterior", 1200)],
+      heroImage: img("editorialBlazer"),
+      campaignImages: [img("darkPortrait"), img("boutiqueInterior")],
       tags: ["Minimalist", "Avant-Garde", "Sustainable"],
       status: "ACTIVE" as const,
       publishedAt: new Date("2024-09-15"),
@@ -136,8 +137,8 @@ async function main() {
       name: "Resort 25",
       season: "Resort 2025",
       editorialDescription: "Fluid draping and considered whites for warm-weather escapes, cut for the modern purist.",
-      heroImage: img("whiteDress", 1600),
-      campaignImages: [img("whiteDress", 1200)],
+      heroImage: img("whiteDress"),
+      campaignImages: [img("whiteDress")],
       tags: ["Minimalist", "Resort"],
       status: "ACTIVE" as const,
       publishedAt: new Date("2025-01-10"),
@@ -150,7 +151,7 @@ async function main() {
       name: "Spring Awakening",
       season: "Spring/Summer 2025",
       editorialDescription: "An unreleased exploration of texture and translucency.",
-      heroImage: img("boutiqueInterior", 1600),
+      heroImage: img("boutiqueInterior"),
       campaignImages: [] as string[],
       tags: ["Draft"],
       status: "DRAFT" as const,
@@ -163,8 +164,8 @@ async function main() {
       name: "Signature Edit",
       season: "Resort 2025",
       editorialDescription: "The ShipLuxe travel-ready essentials, curated for effortless movement.",
-      heroImage: img("neutralBag", 1600),
-      campaignImages: [img("tealShoe", 1200)],
+      heroImage: img("neutralBag"),
+      campaignImages: [img("tealShoe")],
       tags: ["Resort", "Everyday Luxury"],
       status: "ACTIVE" as const,
       publishedAt: new Date("2024-11-01"),
@@ -558,14 +559,14 @@ async function main() {
   const campaignDefs = [
     {
       title: "Noir Obscur Launch",
-      coverImage: img("editorialBlazer", 1200),
+      coverImage: img("editorialBlazer"),
       status: "ACTIVE" as const,
       reach: 48200,
       conversionRate: 4.6,
     },
     {
       title: "Spring Awakening Preview",
-      coverImage: img("boutiqueInterior", 1200),
+      coverImage: img("boutiqueInterior"),
       status: "SCHEDULED" as const,
       scheduledDate: new Date("2025-03-15"),
       reach: 0,
