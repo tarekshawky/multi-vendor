@@ -21,5 +21,35 @@
     "heroTitle": "The New Silhouette",
     "heroDescription": "Embrace the season's boldest architectural cuts and refined textures. A curated selection for the modern purist.",
     "heroCta": "Shop New Season"
+  },
+  "Collections": {
+    "title": "Discover Collections",
+    "sortLabel": "Sort by",
+    "sortNewest": "Newest",
+    "sortPriceAsc": "Price: Low to High",
+    "sortPriceDesc": "Price: High to Low",
+    "allCategories": "All",
+    "empty": "No pieces match this selection yet."
+  },
+  "Storefront": {
+    "aboutTheHouse": "About the House",
+    "featuredCollections": "Featured Collections",
+    "exploreCollection": "Explore Collection",
+    "signaturePieces": "Signature Pieces"
+  },
+  "Designers": {
+    "title": "Designers"
+  },
+  "Product": {
+    "color": "Color",
+    "size": "Size",
+    "addToBag": "Add to Bag",
+    "findInBoutique": "Find in Boutique",
+    "detailsAndDimensions": "Details & Dimensions",
+    "dimensions": "Height {height}, Width {width}, Depth {depth}.",
+    "materials": "Materials: {list}.",
+    "shippingAndReturns": "Shipping & Returns",
+    "shippingCopy": "Complimentary shipping on all orders over $500. Standard delivery within 5-7 business days. Returns accepted within 14 days in original condition.",
+    "designerQuote": "Every stitch is an act of restraint — we design for what remains after everything unnecessary is removed."
   }
 }

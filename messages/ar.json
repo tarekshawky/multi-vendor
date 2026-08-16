@@ -21,5 +21,35 @@
     "heroTitle": "الصورة الجديدة",
     "heroDescription": "احتضني أجرأ القصات المعمارية والخامات الراقية لهذا الموسم. تشكيلة مختارة بعناية للمتطلبين المعاصرين.",
     "heroCta": "تسوقي الموسم الجديد"
+  },
+  "Collections": {
+    "title": "اكتشفي المجموعات",
+    "sortLabel": "ترتيب حسب",
+    "sortNewest": "الأحدث",
+    "sortPriceAsc": "السعر: من الأقل للأعلى",
+    "sortPriceDesc": "السعر: من الأعلى للأقل",
+    "allCategories": "الكل",
+    "empty": "لا توجد قطع مطابقة لهذا الاختيار بعد."
+  },
+  "Storefront": {
+    "aboutTheHouse": "عن الدار",
+    "featuredCollections": "مجموعات مختارة",
+    "exploreCollection": "استكشفي المجموعة",
+    "signaturePieces": "القطع المميزة"
+  },
+  "Designers": {
+    "title": "المصممون"
+  },
+  "Product": {
+    "color": "اللون",
+    "size": "المقاس",
+    "addToBag": "أضيفي إلى الحقيبة",
+    "findInBoutique": "ابحثي في البوتيك",
+    "detailsAndDimensions": "التفاصيل والأبعاد",
+    "dimensions": "الارتفاع {height}، العرض {width}، العمق {depth}.",
+    "materials": "الخامات: {list}.",
+    "shippingAndReturns": "الشحن والإرجاع",
+    "shippingCopy": "شحن مجاني لجميع الطلبات التي تزيد عن 500 دولار. التوصيل القياسي خلال 5-7 أيام عمل. يُقبل الإرجاع خلال 14 يومًا بحالته الأصلية.",
+    "designerQuote": "كل غرزة هي فعل ضبط نفس — نصمم لما يتبقى بعد إزالة كل ما هو غير ضروري."
   }
 }
