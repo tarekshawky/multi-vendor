@@ -51,5 +51,38 @@
     "shippingAndReturns": "الشحن والإرجاع",
     "shippingCopy": "شحن مجاني لجميع الطلبات التي تزيد عن 500 دولار. التوصيل القياسي خلال 5-7 أيام عمل. يُقبل الإرجاع خلال 14 يومًا بحالته الأصلية.",
     "designerQuote": "كل غرزة هي فعل ضبط نفس — نصمم لما يتبقى بعد إزالة كل ما هو غير ضروري."
+  },
+  "VendorNav": {
+    "partnerStudio": "شريك فوغ شيك",
+    "dashboard": "لوحة التحكم",
+    "collections": "المجموعات",
+    "orders": "الطلبات",
+    "customers": "العملاء",
+    "messages": "الرسائل",
+    "promotions": "العروض الترويجية",
+    "marketing": "التسويق",
+    "analytics": "التحليلات",
+    "settings": "الإعدادات",
+    "addCollection": "إضافة مجموعة",
+    "menu": "القائمة"
+  },
+  "VendorDashboard": {
+    "greeting": "مرحباً بعودتك، {name}",
+    "totalRevenue": "إجمالي الإيرادات",
+    "activeCollections": "المجموعات النشطة",
+    "pendingOrders": "الطلبات المعلقة",
+    "salesPerformance": "أداء المبيعات",
+    "month": "شهر",
+    "quarter": "ربع سنة",
+    "year": "سنة",
+    "topPieces": "القطع الأكثر مبيعاً",
+    "unitsSold": "بيع {count} قطعة",
+    "recentOrders": "الطلبات الأخيرة",
+    "viewAllOrders": "عرض جميع الطلبات",
+    "orderId": "رقم الطلب",
+    "customer": "العميل",
+    "items": "العناصر",
+    "value": "القيمة",
+    "status": "الحالة"
   }
 }

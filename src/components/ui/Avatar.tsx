@@ -19,7 +19,7 @@ export function Avatar({ src, name, size = 40, className }: AvatarProps) {
   return (
     <div
       className={cn(
-        "relative flex-shrink-0 overflow-hidden rounded-full border border-outline-variant/30 bg-surface-container-high flex items-center justify-center",
+        "relative shrink-0 overflow-hidden rounded-full border border-outline-variant/30 bg-surface-container-high flex items-center justify-center",
         className,
       )}
       style={{ width: size, height: size }}

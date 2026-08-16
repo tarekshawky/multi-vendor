@@ -18,7 +18,7 @@ export function Switch({ checked, onCheckedChange, disabled, ...aria }: SwitchPr
       disabled={disabled}
       onClick={() => onCheckedChange(!checked)}
       className={cn(
-        "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 ease-in-out focus:outline-none disabled:opacity-40 disabled:pointer-events-none",
+        "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 ease-in-out focus:outline-none disabled:opacity-40 disabled:pointer-events-none",
         checked ? "border-primary bg-primary" : "border-outline-variant bg-surface",
       )}
       {...aria}

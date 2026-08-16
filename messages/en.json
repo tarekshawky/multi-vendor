@@ -51,5 +51,38 @@
     "shippingAndReturns": "Shipping & Returns",
     "shippingCopy": "Complimentary shipping on all orders over $500. Standard delivery within 5-7 business days. Returns accepted within 14 days in original condition.",
     "designerQuote": "Every stitch is an act of restraint — we design for what remains after everything unnecessary is removed."
+  },
+  "VendorNav": {
+    "partnerStudio": "Vogue-Chic Partner",
+    "dashboard": "Dashboard",
+    "collections": "Collections",
+    "orders": "Orders",
+    "customers": "Customers",
+    "messages": "Messages",
+    "promotions": "Promotions",
+    "marketing": "Marketing",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "addCollection": "Add Collection",
+    "menu": "Menu"
+  },
+  "VendorDashboard": {
+    "greeting": "Welcome back, {name}",
+    "totalRevenue": "Total Revenue",
+    "activeCollections": "Active Collections",
+    "pendingOrders": "Pending Orders",
+    "salesPerformance": "Sales Performance",
+    "month": "Month",
+    "quarter": "Quarter",
+    "year": "Year",
+    "topPieces": "Top Pieces",
+    "unitsSold": "{count} sold",
+    "recentOrders": "Recent Orders",
+    "viewAllOrders": "View All Orders",
+    "orderId": "Order ID",
+    "customer": "Customer",
+    "items": "Items",
+    "value": "Value",
+    "status": "Status"
   }
 }
