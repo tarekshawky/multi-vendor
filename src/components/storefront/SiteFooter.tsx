@@ -26,8 +26,17 @@ export function SiteFooter() {
           </Link>
         ))}
       </nav>
-      <div className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
-        {t("copyright", { year: new Date().getFullYear() })}
+      <div className="flex items-center gap-2 font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
+        <span>{t("copyright", { year: new Date().getFullYear() })}</span>
+        <span aria-hidden="true">·</span>
+        <a
+          href="https://tarekshawky.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-primary transition-colors duration-300"
+        >
+          {t("credit")}
+        </a>
       </div>
     </footer>
   );
