@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { Icon } from "@/components/ui/icons/Icon";
+import { SignOutButton } from "@/components/auth/SignOutButton";
 import { cn } from "@/lib/cn";
 
 const navItems = [
@@ -11,6 +12,7 @@ const navItems = [
   { key: "vendors", href: "/admin/vendors", icon: "storefront" },
   { key: "orders", href: "/admin/orders", icon: "local_shipping" },
   { key: "customers", href: "/admin/customers", icon: "group" },
+  { key: "users", href: "/admin/users", icon: "admin_panel_settings" },
 ] as const;
 
 function NavLinks({ pathname, t, onNavigate }: { pathname: string; t: (key: string) => string; onNavigate?: () => void }) {
@@ -60,6 +62,9 @@ export function AdminSidebar() {
         <div className="px-4 flex-1">
           <NavLinks pathname={pathname} t={t} />
         </div>
+        <div className="p-4">
+          <SignOutButton />
+        </div>
       </aside>
 
       {/* Mobile top bar */}
@@ -73,6 +78,9 @@ export function AdminSidebar() {
       {menuOpen && (
         <div className="md:hidden fixed inset-0 top-[73px] z-40 bg-surface px-4 py-6 overflow-y-auto">
           <NavLinks pathname={pathname} t={t} onNavigate={() => setMenuOpen(false)} />
+          <div className="mt-4">
+            <SignOutButton />
+          </div>
         </div>
       )}
     </>

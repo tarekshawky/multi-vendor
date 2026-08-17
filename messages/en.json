@@ -166,7 +166,8 @@
     "haveAccount": "Already have an account?",
     "invalidCredentials": "Incorrect email or password.",
     "invalidInput": "Please fill in all fields (password must be at least 8 characters).",
-    "emailTaken": "An account with this email already exists."
+    "emailTaken": "An account with this email already exists.",
+    "signOut": "Sign Out"
   },
   "VendorOrders": {
     "title": "Orders",
@@ -350,7 +351,8 @@
   "Editorial": {
     "title": "Editorial",
     "subtitle": "Stories from the ateliers — the ideas, textures, and craft behind each collection.",
-    "empty": "No editorial stories published yet."
+    "empty": "No editorial stories published yet.",
+    "backToEditorial": "Back to Editorial"
   },
   "AdminNav": {
     "title": "Vogue-Chic",
@@ -359,6 +361,7 @@
     "vendors": "Vendors",
     "orders": "Orders",
     "customers": "Customers",
+    "users": "Users",
     "menu": "Menu"
   },
   "AdminDashboard": {
@@ -443,6 +446,57 @@
     "confirmDeleteCustomer": "Delete {name}? This cannot be undone.",
     "confirmDeleteOrder": "Delete order #{orderNumber}? This cannot be undone.",
     "deleteBlockedHasOrders": "Can't delete — this account has order history. Suspend it instead if you need to remove it from the platform.",
-    "deleteFailed": "Something went wrong. Please try again."
+    "deleteFailed": "Something went wrong. Please try again.",
+    "cannotDeleteSelf": "You can't delete your own account while signed in."
+  },
+  "WriterNav": {
+    "subtitle": "Editorial Writer",
+    "dashboard": "Dashboard",
+    "stories": "Stories",
+    "newStory": "New Story",
+    "menu": "Menu"
+  },
+  "WriterDashboard": {
+    "greeting": "Welcome back, {name}",
+    "totalStories": "Total Stories",
+    "published": "Published",
+    "drafts": "Drafts",
+    "recentStories": "Recent Stories",
+    "viewAllStories": "View All Stories",
+    "empty": "No stories yet — write your first one."
+  },
+  "WriterStories": {
+    "title": "Stories",
+    "newStory": "New Story",
+    "editStory": "Edit Story",
+    "storyTitle": "Title",
+    "status": "Status",
+    "lastUpdated": "Last Updated",
+    "empty": "No stories yet.",
+    "confirmDelete": "Delete \"{title}\"? This cannot be undone.",
+    "fieldTitle": "Title",
+    "titlePlaceholder": "e.g. Inside the Atelier: Noir Obscur",
+    "continue": "Continue",
+    "coverImage": "Cover Image",
+    "coverImageHint": "JPEG, PNG up to 10MB",
+    "excerpt": "Excerpt",
+    "excerptPlaceholder": "A short teaser shown on the Editorial index...",
+    "body": "Story",
+    "bodyPlaceholder": "Write the full story here...",
+    "publish": "Publish",
+    "unpublish": "Unpublish"
+  },
+  "AdminUsers": {
+    "title": "Users",
+    "createUser": "Create User",
+    "user": "User",
+    "role": "Role",
+    "roleAdmin": "Admin",
+    "roleWriter": "Writer",
+    "roleVendor": "Vendor",
+    "created": "Created",
+    "empty": "No admin or writer accounts yet.",
+    "brandName": "Brand Name",
+    "currency": "Currency"
   }
 }

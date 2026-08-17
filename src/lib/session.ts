@@ -26,3 +26,11 @@ export async function requireAdmin(locale: string) {
   }
   return { user: session!.user };
 }
+
+export async function requireWriter(locale: string) {
+  const session = await auth();
+  if (!session?.user || session.user.role !== "WRITER") {
+    redirect({ href: "/login", locale });
+  }
+  return { user: session!.user };
+}

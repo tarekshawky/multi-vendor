@@ -166,7 +166,8 @@
     "haveAccount": "لديك حساب بالفعل؟",
     "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
     "invalidInput": "يرجى تعبئة جميع الحقول (يجب ألا تقل كلمة المرور عن 8 أحرف).",
-    "emailTaken": "يوجد حساب بهذا البريد الإلكتروني بالفعل."
+    "emailTaken": "يوجد حساب بهذا البريد الإلكتروني بالفعل.",
+    "signOut": "تسجيل الخروج"
   },
   "VendorOrders": {
     "title": "الطلبات",
@@ -350,7 +351,8 @@
   "Editorial": {
     "title": "افتتاحية",
     "subtitle": "قصص من دور الأزياء — الأفكار والخامات والحرفية وراء كل مجموعة.",
-    "empty": "لم يتم نشر أي قصص افتتاحية بعد."
+    "empty": "لم يتم نشر أي قصص افتتاحية بعد.",
+    "backToEditorial": "العودة إلى الافتتاحية"
   },
   "AdminNav": {
     "title": "فوغ شيك",
@@ -359,6 +361,7 @@
     "vendors": "التجار",
     "orders": "الطلبات",
     "customers": "العملاء",
+    "users": "المستخدمون",
     "menu": "القائمة"
   },
   "AdminDashboard": {
@@ -443,6 +446,57 @@
     "confirmDeleteCustomer": "حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
     "confirmDeleteOrder": "حذف الطلب #{orderNumber}؟ لا يمكن التراجع عن هذا الإجراء.",
     "deleteBlockedHasOrders": "تعذر الحذف — لهذا الحساب سجل طلبات. أوقفه مؤقتاً بدلاً من ذلك إذا أردت إزالته من المنصة.",
-    "deleteFailed": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+    "deleteFailed": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "cannotDeleteSelf": "لا يمكنك حذف حسابك الخاص أثناء تسجيل الدخول."
+  },
+  "WriterNav": {
+    "subtitle": "كاتب المحتوى",
+    "dashboard": "لوحة التحكم",
+    "stories": "القصص",
+    "newStory": "قصة جديدة",
+    "menu": "القائمة"
+  },
+  "WriterDashboard": {
+    "greeting": "مرحباً بعودتك، {name}",
+    "totalStories": "إجمالي القصص",
+    "published": "منشورة",
+    "drafts": "مسودات",
+    "recentStories": "القصص الأخيرة",
+    "viewAllStories": "عرض جميع القصص",
+    "empty": "لا توجد قصص بعد — اكتب أول قصة لك."
+  },
+  "WriterStories": {
+    "title": "القصص",
+    "newStory": "قصة جديدة",
+    "editStory": "تعديل القصة",
+    "storyTitle": "العنوان",
+    "status": "الحالة",
+    "lastUpdated": "آخر تحديث",
+    "empty": "لا توجد قصص بعد.",
+    "confirmDelete": "حذف \"{title}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+    "fieldTitle": "العنوان",
+    "titlePlaceholder": "مثال: داخل المشغل: نوار أوبسكور",
+    "continue": "متابعة",
+    "coverImage": "صورة الغلاف",
+    "coverImageHint": "JPEG أو PNG حتى 10 ميغابايت",
+    "excerpt": "مقتطف",
+    "excerptPlaceholder": "مقدمة قصيرة تظهر في فهرس الافتتاحية...",
+    "body": "القصة",
+    "bodyPlaceholder": "اكتب القصة كاملة هنا...",
+    "publish": "نشر",
+    "unpublish": "إلغاء النشر"
+  },
+  "AdminUsers": {
+    "title": "المستخدمون",
+    "createUser": "إنشاء مستخدم",
+    "user": "المستخدم",
+    "role": "الدور",
+    "roleAdmin": "مسؤول",
+    "roleWriter": "كاتب محتوى",
+    "roleVendor": "تاجر",
+    "created": "تاريخ الإنشاء",
+    "empty": "لا يوجد مسؤولون أو كتّاب محتوى بعد.",
+    "brandName": "اسم العلامة التجارية",
+    "currency": "العملة"
   }
 }

@@ -32,9 +32,12 @@ export async function loginAction(
   }
 
   const user = await prisma.user.findUnique({ where: { email } });
-  const destination =
-    user?.role === "VENDOR" ? "/vendor/dashboard" : user?.role === "ADMIN" ? "/admin/dashboard" : "/";
-  redirect({ href: destination, locale });
+  const destinations: Record<string, string> = {
+    VENDOR: "/vendor/dashboard",
+    ADMIN: "/admin/dashboard",
+    WRITER: "/writer/dashboard",
+  };
+  redirect({ href: destinations[user?.role ?? ""] ?? "/", locale });
 }
 
 export async function registerAction(

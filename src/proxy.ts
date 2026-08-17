@@ -5,24 +5,23 @@ import { routing } from "@/i18n/routing";
 
 const intlMiddleware = createIntlMiddleware(routing);
 
+const ROLE_GATED_PREFIXES: { segment: string; role: string }[] = [
+  { segment: "vendor", role: "VENDOR" },
+  { segment: "admin", role: "ADMIN" },
+  { segment: "writer", role: "WRITER" },
+];
+
 export default auth((req) => {
   const pathname = req.nextUrl.pathname;
-  const vendorMatch = pathname.match(/^\/(en|ar)\/vendor(\/|$)/);
-  const adminMatch = pathname.match(/^\/(en|ar)\/admin(\/|$)/);
 
-  if (vendorMatch) {
-    const locale = vendorMatch[1];
-    const role = req.auth?.user?.role;
-    if (!req.auth || role !== "VENDOR") {
-      return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
-    }
-  }
-
-  if (adminMatch) {
-    const locale = adminMatch[1];
-    const role = req.auth?.user?.role;
-    if (!req.auth || role !== "ADMIN") {
-      return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
+  for (const { segment, role } of ROLE_GATED_PREFIXES) {
+    const match = pathname.match(new RegExp(`^/(en|ar)/${segment}(/|$)`));
+    if (match) {
+      const locale = match[1];
+      if (!req.auth || req.auth.user?.role !== role) {
+        return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
+      }
+      break;
     }
   }
 

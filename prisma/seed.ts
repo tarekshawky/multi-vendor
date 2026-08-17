@@ -115,6 +115,12 @@ async function main() {
     create: { ...julianProfileData, userId: julian.id },
   });
 
+  const writer = await prisma.user.upsert({
+    where: { email: "writer@vogue-chic.com" },
+    update: { name: "Camille Renard", role: "WRITER" },
+    create: { email: "writer@vogue-chic.com", passwordHash, name: "Camille Renard", role: "WRITER" },
+  });
+
   // ---- Collections ----
   const collectionDefs = [
     {
@@ -582,12 +588,52 @@ async function main() {
 
   void springDraft;
 
+  // ---- Stories ----
+  const storyDefs = [
+    {
+      slug: "inside-the-atelier-noir-obscur",
+      title: "Inside the Atelier: Noir Obscur",
+      excerpt: "A first look at the darkened silhouettes and considered restraint behind Maison Elite's most talked-about collection.",
+      body: "Every collection begins in silence — before the first sketch, before the first swatch of cloth is pinned to the mannequin. Noir Obscur started with a single question: what remains when everything unnecessary is stripped away?\n\nThe answer arrived slowly, over a season of fittings in a converted warehouse studio. Structural coats in obsidian wool, cut with an architect's precision. Silk gowns that catch light like water at night. Nothing decorative, nothing borrowed from trend — only form, weight, and the quiet confidence of a house that knows exactly what it is.\n\n\"We wanted the clothes to feel like a held breath,\" the creative director told us during a rare studio visit. That tension — between restraint and drama — is what makes Noir Obscur unmistakably Maison Elite.",
+      coverImage: img("editorialBlazer"),
+      status: "PUBLISHED" as const,
+      publishedAt: new Date("2024-09-10"),
+    },
+    {
+      slug: "the-case-for-considered-travel-wear",
+      title: "The Case for Considered Travel Wear",
+      excerpt: "ShipLuxe's Signature Edit makes an argument for fewer, better pieces on the road.",
+      body: "Travel wardrobes have a reputation problem — either performance fabric with no soul, or delicate pieces that don't survive a single layover. ShipLuxe's Signature Edit sets out to prove there's a third way.\n\nThe leather weekender at the heart of the collection is built to age well rather than resist aging entirely; a patina, the brand argues, is a feature, not a flaw. Suede loafers are treated for light rain but still soft enough to pack flat. Every piece answers a real question a traveler actually asks, rather than a marketing brief.\n\nIt's a small collection — deliberately so. \"We'd rather someone own four pieces they reach for every trip than forty they never unpack,\" says the ShipLuxe team.",
+      coverImage: img("neutralBag"),
+      status: "PUBLISHED" as const,
+      publishedAt: new Date("2024-11-05"),
+    },
+    {
+      slug: "notes-from-spring-awakening",
+      title: "Notes from Spring Awakening (Draft)",
+      excerpt: "Early notes on an unreleased collection — texture, translucency, and what comes after Noir Obscur.",
+      body: "Still gathering references for this one. Revisit before publishing.",
+      coverImage: img("boutiqueInterior"),
+      status: "DRAFT" as const,
+      publishedAt: null,
+    },
+  ];
+  for (const { slug, ...data } of storyDefs) {
+    await prisma.story.upsert({
+      where: { slug },
+      update: { ...data, authorId: writer.id },
+      create: { slug, ...data, authorId: writer.id },
+    });
+  }
+
   console.log("Seed complete:", {
     vendors: [maisonEliteUser.email, shipluxeUser.email],
     customers: [elena.email, julian.email],
+    writer: writer.email,
     collections: 4,
     products: Object.keys(products).length,
     orders: Object.keys(orders).length,
+    stories: storyDefs.length,
   });
 }
 

@@ -3,6 +3,7 @@ import { Playfair_Display, Inter, Markazi_Text, Noto_Sans_Arabic } from "next/fo
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { AuthSessionProvider } from "@/components/auth/AuthSessionProvider";
 import "../globals.css";
 
 const playfair = Playfair_Display({
@@ -56,7 +57,9 @@ export default async function LocaleLayout({
       className={`${playfair.variable} ${inter.variable} ${markazi.variable} ${notoSansArabic.variable} antialiased`}
     >
       <body className="bg-background text-on-background font-body-md min-h-screen">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <AuthSessionProvider>{children}</AuthSessionProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

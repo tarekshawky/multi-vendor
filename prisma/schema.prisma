@@ -13,6 +13,12 @@ enum Role {
   CUSTOMER
   VENDOR
   ADMIN
+  WRITER
+}
+
+enum StoryStatus {
+  DRAFT
+  PUBLISHED
 }
 
 enum CollectionStatus {
@@ -76,6 +82,7 @@ model User {
   sentMessages       Message[]       @relation("MessageSender")
   authoredNotes      Note[]          @relation("NoteAuthor")
   conversations      Conversation[]
+  authoredStories    Story[]         @relation("StoryAuthor")
 
   @@index([role])
 }
@@ -379,4 +386,24 @@ model Campaign {
   updatedAt DateTime @updatedAt
 
   @@index([vendorId])
+}
+
+model Story {
+  id       String @id @default(cuid())
+  authorId String
+  author   User   @relation("StoryAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  title      String
+  slug       String      @unique
+  excerpt    String?
+  body       String
+  coverImage String?
+  status     StoryStatus @default(DRAFT)
+  publishedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([authorId])
 }

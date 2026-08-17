@@ -23,7 +23,13 @@ export function DeleteButton({ confirmMessage, action, id, redirectTo }: DeleteB
     startTransition(async () => {
       const result = await action(id);
       if (!result.ok) {
-        setError(result.error === "hasOrders" ? t("deleteBlockedHasOrders") : t("deleteFailed"));
+        setError(
+          result.error === "hasOrders"
+            ? t("deleteBlockedHasOrders")
+            : result.error === "cannotDeleteSelf"
+              ? t("cannotDeleteSelf")
+              : t("deleteFailed"),
+        );
       } else if (redirectTo) {
         router.push(redirectTo);
       } else {

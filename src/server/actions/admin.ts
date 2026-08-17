@@ -21,6 +21,82 @@ function isForeignKeyError(error: unknown) {
   return typeof error === "object" && error !== null && "code" in error && error.code === "P2003";
 }
 
+// ---- Staff Users (Admin / Writer / Vendor, created directly by an admin) ----
+
+export async function createStaffUser(
+  _prevState: AdminActionState,
+  formData: FormData,
+): Promise<AdminActionState> {
+  await requireAdmin();
+
+  const role = String(formData.get("role") ?? "") as "ADMIN" | "WRITER" | "VENDOR";
+  const name = String(formData.get("name") ?? "").trim();
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  const password = String(formData.get("password") ?? "");
+  const locale = String(formData.get("locale") ?? "en");
+
+  if (!["ADMIN", "WRITER", "VENDOR"].includes(role) || !name || !email || password.length < 8) {
+    return { error: "invalidInput" };
+  }
+  if (role === "VENDOR" && !String(formData.get("brandName") ?? "").trim()) {
+    return { error: "invalidInput" };
+  }
+
+  const existing = await prisma.user.findUnique({ where: { email } });
+  if (existing) {
+    return { error: "emailTaken" };
+  }
+
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  if (role === "VENDOR") {
+    const brandName = String(formData.get("brandName") ?? "").trim();
+    const currency = String(formData.get("currency") ?? "USD");
+    const baseSlug = slugify(brandName) || "vendor";
+    let slug = baseSlug;
+    let suffix = 1;
+    while (await prisma.vendorProfile.findUnique({ where: { slug } })) {
+      slug = `${baseSlug}-${++suffix}`;
+    }
+    await prisma.user.create({
+      data: {
+        name,
+        email,
+        passwordHash,
+        role: "VENDOR",
+        vendorProfile: { create: { brandName, slug, currency, status: "ACTIVE" } },
+      },
+    });
+  } else {
+    await prisma.user.create({ data: { name, email, passwordHash, role } });
+  }
+
+  revalidatePath("/admin/users");
+  redirect({ href: "/admin/users", locale });
+}
+
+export async function deleteStaffUser(userId: string): Promise<{ ok: boolean; error?: string }> {
+  const session = await auth();
+  if (!session?.user || session.user.role !== "ADMIN") {
+    throw new Error("Unauthorized");
+  }
+  if (session.user.id === userId) {
+    return { ok: false, error: "cannotDeleteSelf" };
+  }
+
+  try {
+    await prisma.user.delete({ where: { id: userId } });
+  } catch (error) {
+    if (isForeignKeyError(error)) {
+      return { ok: false, error: "hasOrders" };
+    }
+    throw error;
+  }
+
+  revalidatePath("/admin/users");
+  return { ok: true };
+}
+
 // ---- Vendors ----
 
 export async function updateVendorStatus(vendorId: string, status: VendorStatus) {
