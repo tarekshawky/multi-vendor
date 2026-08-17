@@ -75,6 +75,32 @@ export async function createStaffUser(
   redirect({ href: "/admin/users", locale });
 }
 
+export async function updateStaffUser(
+  userId: string,
+  formData: FormData,
+): Promise<{ ok: boolean; error?: string }> {
+  const session = await auth();
+  if (!session?.user || session.user.role !== "ADMIN") {
+    throw new Error("Unauthorized");
+  }
+
+  const name = String(formData.get("name") ?? "").trim();
+  const role = String(formData.get("role") ?? "") as "ADMIN" | "WRITER";
+
+  if (!name || !["ADMIN", "WRITER"].includes(role)) {
+    return { ok: false, error: "invalidInput" };
+  }
+  if (session.user.id === userId && role !== "ADMIN") {
+    return { ok: false, error: "cannotChangeSelfRole" };
+  }
+
+  await prisma.user.update({ where: { id: userId }, data: { name, role } });
+
+  revalidatePath("/admin/users");
+  revalidatePath(`/admin/users/${userId}/edit`);
+  return { ok: true };
+}
+
 export async function deleteStaffUser(userId: string): Promise<{ ok: boolean; error?: string }> {
   const session = await auth();
   if (!session?.user || session.user.role !== "ADMIN") {

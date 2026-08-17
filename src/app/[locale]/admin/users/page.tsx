@@ -56,7 +56,15 @@ export default async function AdminUsersPage({
       header: "",
       align: "end",
       render: (r) => (
-        <DeleteButton id={r.id} action={deleteStaffUser} confirmMessage={tc("confirmDeleteVendor", { name: r.name })} />
+        <div className="flex items-center justify-end gap-4">
+          <Link
+            href={`/admin/users/${r.id}/edit`}
+            className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors"
+          >
+            {tc("edit")}
+          </Link>
+          <DeleteButton id={r.id} action={deleteStaffUser} confirmMessage={tc("confirmDeleteVendor", { name: r.name })} />
+        </div>
       ),
     },
   ];

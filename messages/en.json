@@ -497,6 +497,8 @@
     "created": "Created",
     "empty": "No admin or writer accounts yet.",
     "brandName": "Brand Name",
-    "currency": "Currency"
+    "currency": "Currency",
+    "editUser": "Edit User",
+    "cannotChangeSelfRole": "You can't change your own role while signed in."
   }
 }
