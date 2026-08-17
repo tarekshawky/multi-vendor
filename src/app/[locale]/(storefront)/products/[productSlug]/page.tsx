@@ -21,10 +21,10 @@ export default async function ProductDetailPage({
 
   const product = await prisma.product.findUnique({
     where: { slug: productSlug },
-    include: { vendor: { select: { id: true, brandName: true, slug: true, tagline: true } } },
+    include: { vendor: { select: { id: true, brandName: true, slug: true, tagline: true, status: true } } },
   });
 
-  if (!product) notFound();
+  if (!product || product.vendor.status === "SUSPENDED") notFound();
 
   const dimensions = (product.dimensions as Dimensions) ?? {};
   const colors = (product.colors as Color[]) ?? [];

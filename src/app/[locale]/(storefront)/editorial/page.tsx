@@ -14,7 +14,7 @@ export default async function EditorialPage({
   const t = await getTranslations("Editorial");
 
   const stories = await prisma.collection.findMany({
-    where: { status: "ACTIVE", editorialDescription: { not: null } },
+    where: { status: "ACTIVE", editorialDescription: { not: null }, vendor: { status: "ACTIVE" } },
     orderBy: { publishedAt: "desc" },
     include: { vendor: { select: { brandName: true, slug: true } } },
   });

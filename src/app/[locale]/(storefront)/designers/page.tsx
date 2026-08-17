@@ -6,7 +6,10 @@ import { unsplash } from "@/lib/stock-images";
 
 export default async function DesignersIndexPage() {
   const t = await getTranslations("Designers");
-  const vendors = await prisma.vendorProfile.findMany({ orderBy: { brandName: "asc" } });
+  const vendors = await prisma.vendorProfile.findMany({
+    where: { status: "ACTIVE" },
+    orderBy: { brandName: "asc" },
+  });
 
   return (
     <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-section-gap pt-8">

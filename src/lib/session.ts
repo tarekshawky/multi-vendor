@@ -18,3 +18,11 @@ export async function requireVendor(locale: string) {
 
   return { user: session!.user, vendor: vendor! };
 }
+
+export async function requireAdmin(locale: string) {
+  const session = await auth();
+  if (!session?.user || session.user.role !== "ADMIN") {
+    redirect({ href: "/login", locale });
+  }
+  return { user: session!.user };
+}

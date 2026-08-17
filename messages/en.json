@@ -351,5 +351,66 @@
     "title": "Editorial",
     "subtitle": "Stories from the ateliers — the ideas, textures, and craft behind each collection.",
     "empty": "No editorial stories published yet."
+  },
+  "AdminNav": {
+    "title": "Vogue-Chic",
+    "subtitle": "Platform Admin",
+    "dashboard": "Dashboard",
+    "vendors": "Vendors",
+    "orders": "Orders",
+    "customers": "Customers",
+    "menu": "Menu"
+  },
+  "AdminDashboard": {
+    "title": "Platform Overview",
+    "gmv": "Gross Merchandise Value",
+    "vendors": "Vendors",
+    "orders": "Orders",
+    "customers": "Customers",
+    "topVendors": "Top Vendors",
+    "productCount": "{count} products",
+    "orderCount": "{count} orders",
+    "recentOrders": "Recent Orders",
+    "viewAllOrders": "View All Orders",
+    "orderId": "Order ID",
+    "vendor": "Vendor",
+    "customer": "Customer",
+    "value": "Value",
+    "status": "Status"
+  },
+  "AdminVendors": {
+    "title": "Vendors",
+    "vendor": "Vendor",
+    "products": "Products",
+    "orders": "Orders",
+    "revenue": "Revenue",
+    "status": "Status",
+    "suspend": "Suspend",
+    "activate": "Activate"
+  },
+  "AdminOrders": {
+    "title": "All Orders",
+    "orderId": "Order ID",
+    "vendor": "Vendor",
+    "customer": "Customer",
+    "date": "Date",
+    "value": "Value",
+    "status": "Status",
+    "statusALL": "All",
+    "statusPENDING": "Pending",
+    "statusPROCESSING": "Processing",
+    "statusSHIPPED": "Shipped",
+    "statusDELIVERED": "Delivered",
+    "statusCANCELLED": "Cancelled",
+    "empty": "No orders yet."
+  },
+  "AdminCustomers": {
+    "title": "Customers",
+    "customer": "Customer",
+    "email": "Email",
+    "memberSince": "Member Since",
+    "orders": "Orders",
+    "totalSpend": "Total Spend",
+    "empty": "No customers yet."
   }
 }

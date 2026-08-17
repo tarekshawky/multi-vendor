@@ -351,5 +351,66 @@
     "title": "افتتاحية",
     "subtitle": "قصص من دور الأزياء — الأفكار والخامات والحرفية وراء كل مجموعة.",
     "empty": "لم يتم نشر أي قصص افتتاحية بعد."
+  },
+  "AdminNav": {
+    "title": "فوغ شيك",
+    "subtitle": "إدارة المنصة",
+    "dashboard": "لوحة التحكم",
+    "vendors": "التجار",
+    "orders": "الطلبات",
+    "customers": "العملاء",
+    "menu": "القائمة"
+  },
+  "AdminDashboard": {
+    "title": "نظرة عامة على المنصة",
+    "gmv": "إجمالي قيمة المبيعات",
+    "vendors": "التجار",
+    "orders": "الطلبات",
+    "customers": "العملاء",
+    "topVendors": "أفضل التجار",
+    "productCount": "{count} منتج",
+    "orderCount": "{count} طلب",
+    "recentOrders": "الطلبات الأخيرة",
+    "viewAllOrders": "عرض جميع الطلبات",
+    "orderId": "رقم الطلب",
+    "vendor": "التاجر",
+    "customer": "العميل",
+    "value": "القيمة",
+    "status": "الحالة"
+  },
+  "AdminVendors": {
+    "title": "التجار",
+    "vendor": "التاجر",
+    "products": "المنتجات",
+    "orders": "الطلبات",
+    "revenue": "الإيرادات",
+    "status": "الحالة",
+    "suspend": "إيقاف",
+    "activate": "تفعيل"
+  },
+  "AdminOrders": {
+    "title": "جميع الطلبات",
+    "orderId": "رقم الطلب",
+    "vendor": "التاجر",
+    "customer": "العميل",
+    "date": "التاريخ",
+    "value": "القيمة",
+    "status": "الحالة",
+    "statusALL": "الكل",
+    "statusPENDING": "قيد الانتظار",
+    "statusPROCESSING": "قيد المعالجة",
+    "statusSHIPPED": "تم الشحن",
+    "statusDELIVERED": "تم التسليم",
+    "statusCANCELLED": "ملغى",
+    "empty": "لا توجد طلبات بعد."
+  },
+  "AdminCustomers": {
+    "title": "العملاء",
+    "customer": "العميل",
+    "email": "البريد الإلكتروني",
+    "memberSince": "عضو منذ",
+    "orders": "الطلبات",
+    "totalSpend": "إجمالي الإنفاق",
+    "empty": "لا يوجد عملاء بعد."
   }
 }

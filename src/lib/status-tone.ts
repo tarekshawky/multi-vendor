@@ -39,3 +39,16 @@ export function collectionStatusTone(status: string) {
       return "neutral" as const;
   }
 }
+
+export function vendorStatusTone(status: string) {
+  switch (status) {
+    case "ACTIVE":
+      return "neutral" as const;
+    case "PENDING":
+      return "positive" as const;
+    case "SUSPENDED":
+      return "error" as const;
+    default:
+      return "neutral" as const;
+  }
+}

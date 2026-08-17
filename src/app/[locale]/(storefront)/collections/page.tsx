@@ -33,6 +33,7 @@ export default async function CollectionsPage({
 
   const products = await prisma.product.findMany({
     where: {
+      vendor: { status: "ACTIVE" },
       ...(category ? { category } : {}),
       ...(searchTerm
         ? {

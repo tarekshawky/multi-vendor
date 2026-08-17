@@ -22,7 +22,7 @@ export default async function DesignerStorefrontPage({
     },
   });
 
-  if (!vendor) notFound();
+  if (!vendor || vendor.status === "SUSPENDED") notFound();
 
   return (
     <>
