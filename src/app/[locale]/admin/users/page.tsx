@@ -1,19 +1,25 @@
 import { getTranslations } from "next-intl/server";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Link } from "@/i18n/navigation";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
+import { StatusPill } from "@/components/ui/StatusPill";
 import { DataTable, type Column } from "@/components/ui/DataTable";
 import { buttonClasses } from "@/components/ui/Button";
 import { DeleteButton } from "@/components/admin/DeleteButton";
+import { UserStatusToggle } from "@/components/admin/UserStatusToggle";
 import { deleteStaffUser } from "@/server/actions/admin";
 import { formatDate } from "@/lib/format";
+import { userStatusTone } from "@/lib/status-tone";
+import type { UserStatus } from "@/generated/prisma/client";
 
 type UserRow = {
   id: string;
   name: string;
   email: string;
   role: string;
+  status: UserStatus;
   createdAt: Date;
 };
 
@@ -25,13 +31,21 @@ export default async function AdminUsersPage({
   const { locale } = await params;
   const t = await getTranslations("AdminUsers");
   const tc = await getTranslations("AdminCommon");
+  const session = await auth();
 
   const users = await prisma.user.findMany({
     where: { role: { in: ["ADMIN", "WRITER"] } },
     orderBy: { createdAt: "desc" },
   });
 
-  const rows: UserRow[] = users.map((u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, createdAt: u.createdAt }));
+  const rows: UserRow[] = users.map((u) => ({
+    id: u.id,
+    name: u.name,
+    email: u.email,
+    role: u.role,
+    status: u.status,
+    createdAt: u.createdAt,
+  }));
 
   const columns: Column<UserRow>[] = [
     {
@@ -52,6 +66,14 @@ export default async function AdminUsersPage({
     },
     { key: "createdAt", header: t("created"), render: (r) => formatDate(r.createdAt, locale) },
     {
+      key: "status",
+      header: tc("accountStatus"),
+      align: "end",
+      render: (r) => (
+        <StatusPill label={r.status === "SUSPENDED" ? tc("suspended") : tc("active")} tone={userStatusTone(r.status)} />
+      ),
+    },
+    {
       key: "actions",
       header: "",
       align: "end",
@@ -63,6 +85,7 @@ export default async function AdminUsersPage({
           >
             {tc("edit")}
           </Link>
+          <UserStatusToggle userId={r.id} status={r.status} disabled={session?.user?.id === r.id} />
           <DeleteButton id={r.id} action={deleteStaffUser} confirmMessage={tc("confirmDeleteVendor", { name: r.name })} />
         </div>
       ),

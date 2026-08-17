@@ -52,3 +52,7 @@ export function vendorStatusTone(status: string) {
       return "neutral" as const;
   }
 }
+
+export function userStatusTone(status: string) {
+  return status === "SUSPENDED" ? ("error" as const) : ("neutral" as const);
+}

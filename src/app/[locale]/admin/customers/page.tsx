@@ -3,11 +3,15 @@ import { prisma } from "@/lib/prisma";
 import { Link } from "@/i18n/navigation";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
+import { StatusPill } from "@/components/ui/StatusPill";
 import { DataTable, type Column } from "@/components/ui/DataTable";
 import { buttonClasses } from "@/components/ui/Button";
 import { DeleteButton } from "@/components/admin/DeleteButton";
+import { UserStatusToggle } from "@/components/admin/UserStatusToggle";
 import { deleteCustomer } from "@/server/actions/admin";
 import { formatCurrency, formatDate } from "@/lib/format";
+import { userStatusTone } from "@/lib/status-tone";
+import type { UserStatus } from "@/generated/prisma/client";
 
 type CustomerRow = {
   id: string;
@@ -18,6 +22,7 @@ type CustomerRow = {
   memberSince: Date;
   orderCount: number;
   totalSpend: number;
+  status: UserStatus;
 };
 
 export default async function AdminCustomersPage({
@@ -47,6 +52,7 @@ export default async function AdminCustomersPage({
     memberSince: c.customerProfile?.memberSince ?? c.createdAt,
     orderCount: c.ordersAsCustomer.length,
     totalSpend: c.ordersAsCustomer.reduce((sum, o) => sum + Number(o.total), 0),
+    status: c.status,
   }));
 
   const columns: Column<CustomerRow>[] = [
@@ -71,6 +77,14 @@ export default async function AdminCustomersPage({
       render: (r) => formatCurrency(r.totalSpend, "USD", locale),
     },
     {
+      key: "status",
+      header: tc("accountStatus"),
+      align: "end",
+      render: (r) => (
+        <StatusPill label={r.status === "SUSPENDED" ? tc("suspended") : tc("active")} tone={userStatusTone(r.status)} />
+      ),
+    },
+    {
       key: "actions",
       header: "",
       align: "end",
@@ -82,6 +96,7 @@ export default async function AdminCustomersPage({
           >
             {tc("edit")}
           </Link>
+          <UserStatusToggle userId={r.id} status={r.status} />
           <DeleteButton
             id={r.id}
             action={deleteCustomer}

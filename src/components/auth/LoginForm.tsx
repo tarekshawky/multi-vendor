@@ -7,9 +7,17 @@ import { loginAction } from "@/server/actions/auth";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
-export function LoginForm({ locale, callbackUrl }: { locale: string; callbackUrl?: string }) {
+export function LoginForm({
+  locale,
+  callbackUrl,
+  initialError,
+}: {
+  locale: string;
+  callbackUrl?: string;
+  initialError?: string;
+}) {
   const t = useTranslations("Auth");
-  const [state, formAction, pending] = useActionState(loginAction, undefined);
+  const [state, formAction, pending] = useActionState(loginAction, initialError ? { error: initialError } : undefined);
 
   return (
     <form action={formAction} className="space-y-8">

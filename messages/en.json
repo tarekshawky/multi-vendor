@@ -167,7 +167,8 @@
     "invalidCredentials": "Incorrect email or password.",
     "invalidInput": "Please fill in all fields (password must be at least 8 characters).",
     "emailTaken": "An account with this email already exists.",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "accountSuspended": "This account has been suspended. Contact an administrator for assistance."
   },
   "VendorOrders": {
     "title": "Orders",
@@ -452,7 +453,13 @@
     "loginEmail": "Login Email",
     "newPassword": "New Password",
     "passwordHint": "Leave blank to keep the current password.",
-    "passwordTooShort": "Password must be at least 8 characters."
+    "passwordTooShort": "Password must be at least 8 characters.",
+    "accountStatus": "Account Status",
+    "active": "Active",
+    "suspended": "Suspended",
+    "suspendAccount": "Suspend Account",
+    "activateAccount": "Reactivate",
+    "cannotSuspendSelf": "You can't suspend your own account while signed in."
   },
   "WriterNav": {
     "subtitle": "Editorial Writer",

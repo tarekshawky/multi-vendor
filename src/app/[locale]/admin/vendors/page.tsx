@@ -6,18 +6,21 @@ import { StatusPill } from "@/components/ui/StatusPill";
 import { DataTable, type Column } from "@/components/ui/DataTable";
 import { buttonClasses } from "@/components/ui/Button";
 import { VendorStatusToggle } from "@/components/admin/VendorStatusToggle";
+import { UserStatusToggle } from "@/components/admin/UserStatusToggle";
 import { DeleteButton } from "@/components/admin/DeleteButton";
 import { deleteVendor } from "@/server/actions/admin";
 import { formatCurrency } from "@/lib/format";
-import { vendorStatusTone } from "@/lib/status-tone";
-import type { VendorStatus } from "@/generated/prisma/client";
+import { vendorStatusTone, userStatusTone } from "@/lib/status-tone";
+import type { VendorStatus, UserStatus } from "@/generated/prisma/client";
 
 type VendorRow = {
   id: string;
+  userId: string;
   brandName: string;
   logoImage: string | null;
   slug: string;
   status: VendorStatus;
+  accountStatus: UserStatus;
   currency: string;
   productCount: number;
   orderCount: number;
@@ -38,15 +41,18 @@ export default async function AdminVendorsPage({
     include: {
       _count: { select: { products: true, orders: true } },
       orders: { select: { total: true } },
+      user: { select: { id: true, status: true } },
     },
   });
 
   const rows: VendorRow[] = vendors.map((v) => ({
     id: v.id,
+    userId: v.user.id,
     brandName: v.brandName,
     logoImage: v.logoImage,
     slug: v.slug,
     status: v.status,
+    accountStatus: v.user.status,
     currency: v.currency,
     productCount: v._count.products,
     orderCount: v._count.orders,
@@ -74,6 +80,17 @@ export default async function AdminVendorsPage({
       render: (r) => <StatusPill label={r.status} tone={vendorStatusTone(r.status)} />,
     },
     {
+      key: "account",
+      header: tc("accountStatus"),
+      align: "end",
+      render: (r) => (
+        <StatusPill
+          label={r.accountStatus === "SUSPENDED" ? tc("suspended") : tc("active")}
+          tone={userStatusTone(r.accountStatus)}
+        />
+      ),
+    },
+    {
       key: "actions",
       header: "",
       align: "end",
@@ -86,6 +103,7 @@ export default async function AdminVendorsPage({
             {tc("edit")}
           </Link>
           <VendorStatusToggle vendorId={r.id} status={r.status} />
+          <UserStatusToggle userId={r.userId} status={r.accountStatus} />
           <DeleteButton
             id={r.id}
             action={deleteVendor}

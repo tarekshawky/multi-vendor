@@ -6,7 +6,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "@/i18n/navigation";
 import { slugify } from "@/lib/slug";
-import type { VendorStatus, OrderStatus } from "@/generated/prisma/client";
+import type { VendorStatus, OrderStatus, UserStatus } from "@/generated/prisma/client";
 
 export type AdminActionState = { error?: string } | undefined;
 
@@ -19,6 +19,26 @@ async function requireAdmin() {
 
 function isForeignKeyError(error: unknown) {
   return typeof error === "object" && error !== null && "code" in error && error.code === "P2003";
+}
+
+// Account-level suspension (blocks login entirely), shared across vendors,
+// customers, and staff users — distinct from VendorProfile.status, which is
+// a business/storefront-visibility flag and does not affect login.
+export async function setUserStatus(userId: string, status: UserStatus): Promise<{ ok: boolean; error?: string }> {
+  const session = await auth();
+  if (!session?.user || session.user.role !== "ADMIN") {
+    throw new Error("Unauthorized");
+  }
+  if (session.user.id === userId) {
+    return { ok: false, error: "cannotSuspendSelf" };
+  }
+
+  await prisma.user.update({ where: { id: userId }, data: { status } });
+
+  revalidatePath("/admin/vendors");
+  revalidatePath("/admin/customers");
+  revalidatePath("/admin/users");
+  return { ok: true };
 }
 
 // Shared by every admin "edit user" action: validates the (possibly changed)

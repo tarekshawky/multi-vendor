@@ -17,6 +17,11 @@ export async function loginAction(
   const locale = String(formData.get("locale") ?? "en");
   const callbackUrl = String(formData.get("callbackUrl") ?? "");
 
+  const existingUser = await prisma.user.findUnique({ where: { email } });
+  if (existingUser?.status === "SUSPENDED") {
+    return { error: "accountSuspended" };
+  }
+
   try {
     await signIn("credentials", { email, password, redirect: false });
   } catch (error) {
@@ -31,13 +36,12 @@ export async function loginAction(
     redirect({ href: callbackUrl, locale });
   }
 
-  const user = await prisma.user.findUnique({ where: { email } });
   const destinations: Record<string, string> = {
     VENDOR: "/vendor/dashboard",
     ADMIN: "/admin/dashboard",
     WRITER: "/writer/dashboard",
   };
-  redirect({ href: destinations[user?.role ?? ""] ?? "/", locale });
+  redirect({ href: destinations[existingUser?.role ?? ""] ?? "/", locale });
 }
 
 export async function registerAction(
