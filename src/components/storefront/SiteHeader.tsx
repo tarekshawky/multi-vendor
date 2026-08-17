@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import { Icon } from "@/components/ui/icons/Icon";
 import { CountBadge } from "@/components/ui/Badge";
 import { SearchOverlay } from "@/components/storefront/SearchOverlay";
+import { useCart } from "@/components/storefront/CartContext";
 import { cn } from "@/lib/cn";
 
 const navItems = [
@@ -43,6 +44,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const { totalCount, open: openCart } = useCart();
 
   return (
     <>
@@ -85,9 +87,14 @@ export function SiteHeader() {
           <Link href="/login" aria-label={t("profile")} className="text-primary hover:opacity-70 transition-opacity duration-500">
             <Icon name="person" weight={300} />
           </Link>
-          <button aria-label={t("bag")} className="relative text-primary hover:opacity-70 transition-opacity duration-500">
+          <button
+            type="button"
+            aria-label={t("bag")}
+            onClick={openCart}
+            className="relative text-primary hover:opacity-70 transition-opacity duration-500"
+          >
             <Icon name="shopping_bag" weight={300} />
-            <CountBadge count={0} />
+            <CountBadge count={totalCount} />
           </button>
         </div>
       </header>
@@ -100,6 +107,10 @@ export function SiteHeader() {
         <div className="flex items-center gap-5">
           <button type="button" aria-label={t("search")} onClick={() => setSearchOpen(true)} className="text-primary">
             <Icon name="search" />
+          </button>
+          <button type="button" aria-label={t("bag")} onClick={openCart} className="relative text-primary">
+            <Icon name="shopping_bag" />
+            <CountBadge count={totalCount} />
           </button>
           <button aria-label={t("menu")} onClick={() => setMenuOpen((v) => !v)} className="text-primary">
             <Icon name={menuOpen ? "close" : "menu"} />

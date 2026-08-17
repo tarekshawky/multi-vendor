@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 import { Link } from "@/i18n/navigation";
-import { buttonClasses } from "@/components/ui/Button";
 import { AccordionItem } from "@/components/ui/Accordion";
+import { ProductActions } from "@/components/storefront/ProductActions";
 import { formatCurrency } from "@/lib/format";
 import { unsplash } from "@/lib/stock-images";
 
@@ -21,7 +21,7 @@ export default async function ProductDetailPage({
 
   const product = await prisma.product.findUnique({
     where: { slug: productSlug },
-    include: { vendor: { select: { brandName: true, slug: true, tagline: true } } },
+    include: { vendor: { select: { id: true, brandName: true, slug: true, tagline: true } } },
   });
 
   if (!product) notFound();
@@ -57,50 +57,18 @@ export default async function ProductDetailPage({
             {formatCurrency(product.price.toString(), product.currency)}
           </p>
 
-          {colors.length > 0 && (
-            <div className="mb-8">
-              <p className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-3">
-                {t("color")}
-              </p>
-              <div className="flex gap-3">
-                {colors.map((c) => (
-                  <span
-                    key={c.name}
-                    title={c.name}
-                    className="w-8 h-8 rounded-full border border-outline-variant/40 cursor-pointer"
-                    style={{ backgroundColor: c.hex }}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {product.sizes.length > 0 && (
-            <div className="mb-8">
-              <p className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-3">
-                {t("size")}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {product.sizes.map((s) => (
-                  <span
-                    key={s}
-                    className="px-4 py-2 border border-outline-variant text-primary font-label-caps text-label-caps cursor-pointer hover:border-primary transition-colors"
-                  >
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="flex flex-col sm:flex-row gap-4 mb-12">
-            <button type="button" className={buttonClasses("primary", "lg", "flex-1")}>
-              {t("addToBag")}
-            </button>
-            <button type="button" className={buttonClasses("secondary", "lg", "flex-1")}>
-              {t("findInBoutique")}
-            </button>
-          </div>
+          <ProductActions
+            productId={product.id}
+            slug={product.slug}
+            name={product.name}
+            price={Number(product.price)}
+            currency={product.currency}
+            image={product.images[0]}
+            vendorId={product.vendor.id}
+            vendorName={product.vendor.brandName}
+            colors={colors}
+            sizes={product.sizes}
+          />
 
           <div>
             <AccordionItem title={t("detailsAndDimensions")} defaultOpen>

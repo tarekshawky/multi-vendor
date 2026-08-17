@@ -37,6 +37,21 @@
     "hint": "اضغطي Enter للبحث، أو Esc للإغلاق",
     "close": "إغلاق البحث"
   },
+  "Cart": {
+    "title": "حقيبة التسوق",
+    "close": "إغلاق الحقيبة",
+    "empty": "حقيبتك فارغة.",
+    "subtotal": "المجموع الفرعي",
+    "checkout": "إتمام الشراء",
+    "processing": "جارٍ المعالجة…",
+    "checkoutError": "حدث خطأ أثناء تقديم طلبك. يرجى المحاولة مرة أخرى.",
+    "orderPlaced": "تم تقديم الطلب",
+    "orderNumbers": "تأكيد الطلب: {numbers}",
+    "continueShopping": "متابعة التسوق",
+    "remove": "إزالة العنصر",
+    "increase": "زيادة الكمية",
+    "decrease": "إنقاص الكمية"
+  },
   "Storefront": {
     "aboutTheHouse": "عن الدار",
     "featuredCollections": "مجموعات مختارة",
@@ -50,6 +65,7 @@
     "color": "اللون",
     "size": "المقاس",
     "addToBag": "أضيفي إلى الحقيبة",
+    "addedToBag": "أُضيفت ✓",
     "findInBoutique": "ابحثي في البوتيك",
     "detailsAndDimensions": "التفاصيل والأبعاد",
     "dimensions": "الارتفاع {height}، العرض {width}، العمق {depth}.",

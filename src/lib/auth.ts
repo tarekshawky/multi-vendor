@@ -6,6 +6,10 @@ import type { Role } from "@/generated/prisma/client";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
+  // Vercel sets VERCEL=1 and Auth.js auto-trusts the host there, but
+  // self-hosted / `next start` production servers need this explicitly —
+  // otherwise every session/credentials request 500s with UntrustedHost.
+  trustHost: true,
   pages: {
     signIn: "/login",
   },

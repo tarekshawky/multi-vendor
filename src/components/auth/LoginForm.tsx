@@ -7,13 +7,14 @@ import { loginAction } from "@/server/actions/auth";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
-export function LoginForm({ locale }: { locale: string }) {
+export function LoginForm({ locale, callbackUrl }: { locale: string; callbackUrl?: string }) {
   const t = useTranslations("Auth");
   const [state, formAction, pending] = useActionState(loginAction, undefined);
 
   return (
     <form action={formAction} className="space-y-8">
       <input type="hidden" name="locale" value={locale} />
+      {callbackUrl && <input type="hidden" name="callbackUrl" value={callbackUrl} />}
       <div className="space-y-2">
         <label className="block font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
           {t("email")}

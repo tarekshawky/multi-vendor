@@ -37,6 +37,21 @@
     "hint": "Press Enter to search, Esc to close",
     "close": "Close search"
   },
+  "Cart": {
+    "title": "Shopping Bag",
+    "close": "Close bag",
+    "empty": "Your bag is empty.",
+    "subtotal": "Subtotal",
+    "checkout": "Checkout",
+    "processing": "Processing…",
+    "checkoutError": "Something went wrong placing your order. Please try again.",
+    "orderPlaced": "Order Placed",
+    "orderNumbers": "Order confirmation: {numbers}",
+    "continueShopping": "Continue Shopping",
+    "remove": "Remove item",
+    "increase": "Increase quantity",
+    "decrease": "Decrease quantity"
+  },
   "Storefront": {
     "aboutTheHouse": "About the House",
     "featuredCollections": "Featured Collections",
@@ -50,6 +65,7 @@
     "color": "Color",
     "size": "Size",
     "addToBag": "Add to Bag",
+    "addedToBag": "Added ✓",
     "findInBoutique": "Find in Boutique",
     "detailsAndDimensions": "Details & Dimensions",
     "dimensions": "Height {height}, Width {width}, Depth {depth}.",

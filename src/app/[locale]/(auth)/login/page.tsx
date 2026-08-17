@@ -1,8 +1,15 @@
 import { getTranslations } from "next-intl/server";
 import { LoginForm } from "@/components/auth/LoginForm";
 
-export default async function LoginPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function LoginPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ callbackUrl?: string }>;
+}) {
   const { locale } = await params;
+  const { callbackUrl } = await searchParams;
   const t = await getTranslations("Auth");
 
   return (
@@ -10,7 +17,7 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
       <div className="w-full max-w-sm">
         <h1 className="font-display text-headline-lg text-primary mb-2 text-center">{t("signIn")}</h1>
         <p className="text-on-surface-variant text-sm text-center mb-8">{t("welcomeBack")}</p>
-        <LoginForm locale={locale} />
+        <LoginForm locale={locale} callbackUrl={callbackUrl} />
       </div>
     </main>
   );

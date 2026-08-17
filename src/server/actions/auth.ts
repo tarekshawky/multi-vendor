@@ -15,6 +15,7 @@ export async function loginAction(
   const email = String(formData.get("email") ?? "");
   const password = String(formData.get("password") ?? "");
   const locale = String(formData.get("locale") ?? "en");
+  const callbackUrl = String(formData.get("callbackUrl") ?? "");
 
   try {
     await signIn("credentials", { email, password, redirect: false });
@@ -23,6 +24,11 @@ export async function loginAction(
       return { error: "invalidCredentials" };
     }
     throw error;
+  }
+
+  // Only honor same-origin relative paths to avoid an open redirect.
+  if (callbackUrl.startsWith("/") && !callbackUrl.startsWith("//")) {
+    redirect({ href: callbackUrl, locale });
   }
 
   const user = await prisma.user.findUnique({ where: { email } });
