@@ -13,7 +13,7 @@ export function SiteFooter() {
   const t = useTranslations("Footer");
 
   return (
-    <footer className="bg-surface w-full py-section-gap px-margin-mobile md:px-margin-desktop border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto gap-8">
+    <footer className="bg-surface w-full py-section-gap px-margin-mobile md:px-margin-desktop border-t border-outline-variant/30 flex flex-col items-center text-center max-w-container-max mx-auto gap-8">
       <div className="font-headline-sm text-headline-sm text-primary tracking-widest">VOGUE-CHIC</div>
       <nav className="flex flex-wrap justify-center gap-6 md:gap-8">
         {links.map((link) => (
@@ -26,7 +26,7 @@ export function SiteFooter() {
           </Link>
         ))}
       </nav>
-      <div className="flex items-center gap-2 font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
+      <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
         <span>{t("copyright", { year: new Date().getFullYear() })}</span>
         <span aria-hidden="true">·</span>
         <a
