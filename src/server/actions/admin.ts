@@ -21,6 +21,42 @@ function isForeignKeyError(error: unknown) {
   return typeof error === "object" && error !== null && "code" in error && error.code === "P2003";
 }
 
+// Shared by every admin "edit user" action: validates the (possibly changed)
+// login name/email — checking email uniqueness against every OTHER user —
+// and hashes a new password only if one was actually provided (the edit
+// forms treat the password field as "leave blank to keep current").
+async function buildAccountUpdate(
+  userId: string,
+  formData: FormData,
+): Promise<
+  | { ok: true; data: { name: string; email: string; passwordHash?: string } }
+  | { ok: false; error: string }
+> {
+  const name = String(formData.get("name") ?? "").trim();
+  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+
+  if (!name || !email) {
+    return { ok: false, error: "invalidInput" };
+  }
+
+  const existing = await prisma.user.findUnique({ where: { email } });
+  if (existing && existing.id !== userId) {
+    return { ok: false, error: "emailTaken" };
+  }
+
+  const data: { name: string; email: string; passwordHash?: string } = { name, email };
+
+  const newPassword = String(formData.get("newPassword") ?? "");
+  if (newPassword) {
+    if (newPassword.length < 8) {
+      return { ok: false, error: "passwordTooShort" };
+    }
+    data.passwordHash = await bcrypt.hash(newPassword, 10);
+  }
+
+  return { ok: true, data };
+}
+
 // ---- Staff Users (Admin / Writer / Vendor, created directly by an admin) ----
 
 export async function createStaffUser(
@@ -84,17 +120,20 @@ export async function updateStaffUser(
     throw new Error("Unauthorized");
   }
 
-  const name = String(formData.get("name") ?? "").trim();
   const role = String(formData.get("role") ?? "") as "ADMIN" | "WRITER";
-
-  if (!name || !["ADMIN", "WRITER"].includes(role)) {
+  if (!["ADMIN", "WRITER"].includes(role)) {
     return { ok: false, error: "invalidInput" };
   }
   if (session.user.id === userId && role !== "ADMIN") {
     return { ok: false, error: "cannotChangeSelfRole" };
   }
 
-  await prisma.user.update({ where: { id: userId }, data: { name, role } });
+  const accountUpdate = await buildAccountUpdate(userId, formData);
+  if (!accountUpdate.ok) {
+    return accountUpdate;
+  }
+
+  await prisma.user.update({ where: { id: userId }, data: { ...accountUpdate.data, role } });
 
   revalidatePath("/admin/users");
   revalidatePath(`/admin/users/${userId}/edit`);
@@ -178,24 +217,36 @@ export async function createVendor(
   redirect({ href: "/admin/vendors", locale });
 }
 
-export async function updateVendor(vendorId: string, formData: FormData) {
+export async function updateVendor(vendorId: string, formData: FormData): Promise<{ ok: boolean; error?: string }> {
   await requireAdmin();
 
-  await prisma.vendorProfile.update({
-    where: { id: vendorId },
-    data: {
-      brandName: String(formData.get("brandName") ?? ""),
-      tagline: String(formData.get("tagline") ?? "") || null,
-      bio: String(formData.get("bio") ?? "") || null,
-      contactEmail: String(formData.get("contactEmail") ?? "") || null,
-      phone: String(formData.get("phone") ?? "") || null,
-      hqAddress: String(formData.get("hqAddress") ?? "") || null,
-      currency: String(formData.get("currency") ?? "USD"),
-    },
-  });
+  const vendor = await prisma.vendorProfile.findUnique({ where: { id: vendorId }, select: { userId: true } });
+  if (!vendor) return { ok: false, error: "invalidInput" };
+
+  const accountUpdate = await buildAccountUpdate(vendor.userId, formData);
+  if (!accountUpdate.ok) {
+    return accountUpdate;
+  }
+
+  await prisma.$transaction([
+    prisma.user.update({ where: { id: vendor.userId }, data: accountUpdate.data }),
+    prisma.vendorProfile.update({
+      where: { id: vendorId },
+      data: {
+        brandName: String(formData.get("brandName") ?? ""),
+        tagline: String(formData.get("tagline") ?? "") || null,
+        bio: String(formData.get("bio") ?? "") || null,
+        contactEmail: String(formData.get("contactEmail") ?? "") || null,
+        phone: String(formData.get("phone") ?? "") || null,
+        hqAddress: String(formData.get("hqAddress") ?? "") || null,
+        currency: String(formData.get("currency") ?? "USD"),
+      },
+    }),
+  ]);
 
   revalidatePath("/admin/vendors");
   revalidatePath(`/admin/vendors/${vendorId}/edit`);
+  return { ok: true };
 }
 
 export async function deleteVendor(vendorId: string): Promise<{ ok: boolean; error?: string }> {
@@ -262,16 +313,20 @@ export async function createCustomer(
   redirect({ href: "/admin/customers", locale });
 }
 
-export async function updateCustomer(userId: string, formData: FormData) {
+export async function updateCustomer(userId: string, formData: FormData): Promise<{ ok: boolean; error?: string }> {
   await requireAdmin();
 
-  const name = String(formData.get("name") ?? "").trim();
+  const accountUpdate = await buildAccountUpdate(userId, formData);
+  if (!accountUpdate.ok) {
+    return accountUpdate;
+  }
+
   const vipTier = String(formData.get("vipTier") ?? "STANDARD") as "STANDARD" | "ELITE" | "VIP";
   const phone = String(formData.get("phone") ?? "") || null;
   const location = String(formData.get("location") ?? "") || null;
 
   await prisma.$transaction([
-    prisma.user.update({ where: { id: userId }, data: { name } }),
+    prisma.user.update({ where: { id: userId }, data: accountUpdate.data }),
     prisma.customerProfile.upsert({
       where: { userId },
       update: { vipTier, phone, location },
@@ -281,6 +336,7 @@ export async function updateCustomer(userId: string, formData: FormData) {
 
   revalidatePath("/admin/customers");
   revalidatePath(`/admin/customers/${userId}/edit`);
+  return { ok: true };
 }
 
 export async function deleteCustomer(userId: string): Promise<{ ok: boolean; error?: string }> {

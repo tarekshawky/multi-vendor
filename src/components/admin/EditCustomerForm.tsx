@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 type Customer = {
   id: string;
   name: string;
+  email: string;
   vipTier: string;
   phone: string | null;
   location: string | null;
@@ -20,14 +21,22 @@ export function EditCustomerForm({ customer }: { customer: Customer }) {
   const tc = useTranslations("AdminCommon");
   const [pending, startTransition] = useTransition();
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     setSaved(false);
+    setError(null);
     startTransition(async () => {
-      await updateCustomer(customer.id, formData);
-      setSaved(true);
+      const result = await updateCustomer(customer.id, formData);
+      if (!result.ok) {
+        setError(tc(result.error ?? "deleteFailed"));
+      } else {
+        setSaved(true);
+        form.querySelector<HTMLInputElement>('input[name="newPassword"]')!.value = "";
+      }
     });
   }
 
@@ -38,6 +47,19 @@ export function EditCustomerForm({ customer }: { customer: Customer }) {
           {tc("name")}
         </label>
         <Input type="text" name="name" defaultValue={customer.name} required />
+      </div>
+      <div className="space-y-2">
+        <label className="block font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
+          {tc("loginEmail")}
+        </label>
+        <Input type="email" name="email" defaultValue={customer.email} required />
+      </div>
+      <div className="space-y-2">
+        <label className="block font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
+          {tc("newPassword")}
+        </label>
+        <Input type="password" name="newPassword" minLength={8} autoComplete="new-password" />
+        <p className="text-xs text-on-surface-variant">{tc("passwordHint")}</p>
       </div>
       <div className="space-y-2">
         <label className="block font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
@@ -61,6 +83,7 @@ export function EditCustomerForm({ customer }: { customer: Customer }) {
         </label>
         <Input type="text" name="location" defaultValue={customer.location ?? ""} />
       </div>
+      {error && <p className="text-error text-sm">{error}</p>}
       <div className="flex items-center gap-4">
         <Button type="submit" size="lg" disabled={pending}>
           {pending ? tc("saving") : tc("saveChanges")}

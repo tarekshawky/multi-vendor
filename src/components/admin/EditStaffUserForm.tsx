@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 type StaffUser = {
   id: string;
   name: string;
+  email: string;
   role: "ADMIN" | "WRITER";
 };
 
@@ -22,15 +23,19 @@ export function EditStaffUserForm({ user, isSelf }: { user: StaffUser; isSelf: b
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     setSaved(false);
     setError(null);
     startTransition(async () => {
       const result = await updateStaffUser(user.id, formData);
       if (!result.ok) {
-        setError(result.error === "cannotChangeSelfRole" ? t("cannotChangeSelfRole") : tc("deleteFailed"));
+        setError(
+          result.error === "cannotChangeSelfRole" ? t("cannotChangeSelfRole") : tc(result.error ?? "deleteFailed"),
+        );
       } else {
         setSaved(true);
+        form.querySelector<HTMLInputElement>('input[name="newPassword"]')!.value = "";
       }
     });
   }
@@ -46,13 +51,42 @@ export function EditStaffUserForm({ user, isSelf }: { user: StaffUser; isSelf: b
 
       <div className="space-y-2">
         <label className="block font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
+          {tc("loginEmail")}
+        </label>
+        <Input type="email" name="email" defaultValue={user.email} required />
+      </div>
+
+      <div className="space-y-2">
+        <label className="block font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
+          {tc("newPassword")}
+        </label>
+        <Input type="password" name="newPassword" minLength={8} autoComplete="new-password" />
+        <p className="text-xs text-on-surface-variant">{tc("passwordHint")}</p>
+      </div>
+
+      <div className="space-y-2">
+        <label className="block font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
           {t("role")}
         </label>
-        <Select name="role" defaultValue={user.role} disabled={isSelf}>
-          <option value="ADMIN">{t("roleAdmin")}</option>
-          <option value="WRITER">{t("roleWriter")}</option>
-        </Select>
-        {isSelf && <p className="text-xs text-on-surface-variant">{t("cannotChangeSelfRole")}</p>}
+        {isSelf ? (
+          <>
+            {/* A disabled <select> wouldn't submit its value at all — keep the
+                visible control disabled for UX, but carry the real value via
+                a hidden input so the rest of the form (name/email/password)
+                can still be saved for your own account. */}
+            <Select name="role_display" defaultValue={user.role} disabled>
+              <option value="ADMIN">{t("roleAdmin")}</option>
+              <option value="WRITER">{t("roleWriter")}</option>
+            </Select>
+            <input type="hidden" name="role" value={user.role} />
+            <p className="text-xs text-on-surface-variant">{t("cannotChangeSelfRole")}</p>
+          </>
+        ) : (
+          <Select name="role" defaultValue={user.role}>
+            <option value="ADMIN">{t("roleAdmin")}</option>
+            <option value="WRITER">{t("roleWriter")}</option>
+          </Select>
+        )}
       </div>
 
       {error && <p className="text-error text-sm">{error}</p>}

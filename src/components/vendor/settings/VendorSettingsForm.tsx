@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { Switch } from "@/components/ui/Switch";
 import { ImageUploadField } from "@/components/vendor/ImageUploadField";
+import { ChangePasswordForm } from "@/components/account/ChangePasswordForm";
 
 type VendorSettingsFormProps = {
   vendor: {
@@ -45,8 +46,8 @@ export function VendorSettingsForm({ vendor, labels }: VendorSettingsFormProps) 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
-      <div className="lg:col-span-2 space-y-12">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+      <form onSubmit={handleSubmit} className="lg:col-span-2 space-y-12">
         <section className="space-y-6">
           <h2 className="font-headline-sm text-headline-sm text-primary">{labels.brandProfile}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -127,7 +128,7 @@ export function VendorSettingsForm({ vendor, labels }: VendorSettingsFormProps) 
           </Button>
           {saved && <span className="text-sm text-on-surface-variant">{labels.saved}</span>}
         </div>
-      </div>
+      </form>
 
       <div className="space-y-8">
         <div className="bg-surface-container-lowest border border-outline-variant/20 p-6">
@@ -152,9 +153,7 @@ export function VendorSettingsForm({ vendor, labels }: VendorSettingsFormProps) 
             <p className="font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">
               {labels.passwordSecurity}
             </p>
-            <button type="button" className="text-sm text-primary underline">
-              {labels.updatePassword}
-            </button>
+            <ChangePasswordForm triggerClassName="text-sm text-primary underline" />
           </div>
         </div>
 
@@ -163,6 +162,6 @@ export function VendorSettingsForm({ vendor, labels }: VendorSettingsFormProps) 
           <p className="text-sm text-on-surface-variant">{labels.partnerSupportCopy}</p>
         </div>
       </div>
-    </form>
+    </div>
   );
 }

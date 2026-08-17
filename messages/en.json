@@ -447,7 +447,12 @@
     "confirmDeleteOrder": "Delete order #{orderNumber}? This cannot be undone.",
     "deleteBlockedHasOrders": "Can't delete — this account has order history. Suspend it instead if you need to remove it from the platform.",
     "deleteFailed": "Something went wrong. Please try again.",
-    "cannotDeleteSelf": "You can't delete your own account while signed in."
+    "cannotDeleteSelf": "You can't delete your own account while signed in.",
+    "accountCredentials": "Account Credentials",
+    "loginEmail": "Login Email",
+    "newPassword": "New Password",
+    "passwordHint": "Leave blank to keep the current password.",
+    "passwordTooShort": "Password must be at least 8 characters."
   },
   "WriterNav": {
     "subtitle": "Editorial Writer",
@@ -500,5 +505,17 @@
     "currency": "Currency",
     "editUser": "Edit User",
     "cannotChangeSelfRole": "You can't change your own role while signed in."
+  },
+  "Account": {
+    "updatePassword": "Update Password",
+    "updating": "Updating…",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "passwordUpdated": "Password updated.",
+    "passwordTooShort": "New password must be at least 8 characters.",
+    "passwordMismatch": "New password and confirmation don't match.",
+    "incorrectPassword": "Current password is incorrect.",
+    "genericError": "Something went wrong. Please try again."
   }
 }

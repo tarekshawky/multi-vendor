@@ -447,7 +447,12 @@
     "confirmDeleteOrder": "حذف الطلب #{orderNumber}؟ لا يمكن التراجع عن هذا الإجراء.",
     "deleteBlockedHasOrders": "تعذر الحذف — لهذا الحساب سجل طلبات. أوقفه مؤقتاً بدلاً من ذلك إذا أردت إزالته من المنصة.",
     "deleteFailed": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
-    "cannotDeleteSelf": "لا يمكنك حذف حسابك الخاص أثناء تسجيل الدخول."
+    "cannotDeleteSelf": "لا يمكنك حذف حسابك الخاص أثناء تسجيل الدخول.",
+    "accountCredentials": "بيانات الحساب",
+    "loginEmail": "بريد تسجيل الدخول",
+    "newPassword": "كلمة مرور جديدة",
+    "passwordHint": "اتركه فارغاً للاحتفاظ بكلمة المرور الحالية.",
+    "passwordTooShort": "يجب ألا تقل كلمة المرور عن 8 أحرف."
   },
   "WriterNav": {
     "subtitle": "كاتب المحتوى",
@@ -500,5 +505,17 @@
     "currency": "العملة",
     "editUser": "تعديل المستخدم",
     "cannotChangeSelfRole": "لا يمكنك تغيير دورك الخاص أثناء تسجيل الدخول."
+  },
+  "Account": {
+    "updatePassword": "تحديث كلمة المرور",
+    "updating": "جارٍ التحديث…",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور الجديدة",
+    "passwordUpdated": "تم تحديث كلمة المرور.",
+    "passwordTooShort": "يجب ألا تقل كلمة المرور الجديدة عن 8 أحرف.",
+    "passwordMismatch": "كلمة المرور الجديدة والتأكيد غير متطابقين.",
+    "incorrectPassword": "كلمة المرور الحالية غير صحيحة.",
+    "genericError": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
   }
 }

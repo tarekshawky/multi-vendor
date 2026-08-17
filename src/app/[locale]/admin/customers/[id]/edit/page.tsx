@@ -26,6 +26,7 @@ export default async function EditCustomerPage({
         customer={{
           id: user.id,
           name: user.name,
+          email: user.email,
           vipTier: user.customerProfile?.vipTier ?? "STANDARD",
           phone: user.customerProfile?.phone ?? null,
           location: user.customerProfile?.location ?? null,
