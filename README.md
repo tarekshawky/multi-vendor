@@ -1,5 +1,18 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Demo Accounts
+
+Seeded via `prisma/seed.ts`. All accounts share the password `password123`.
+
+| Role | Email | Password |
+| --- | --- | --- |
+| Admin | `admin@vogue-chic.com` | `password123` |
+| Vendor (Maison Elite) | `vendor@maisonelite.com` | `password123` |
+| Vendor (ShipLuxe) | `vendor@shipluxe.com` | `password123` |
+| Writer | `writer@vogue-chic.com` | `password123` |
+| Customer | `elena.vance@example.com` | `password123` |
+| Customer | `julian.cross@example.com` | `password123` |
+
 ## Getting Started
 
 First, run the development server:
