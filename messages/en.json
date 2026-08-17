@@ -29,7 +29,13 @@
     "sortPriceAsc": "Price: Low to High",
     "sortPriceDesc": "Price: High to Low",
     "allCategories": "All",
-    "empty": "No pieces match this selection yet."
+    "empty": "No pieces match this selection yet.",
+    "searchResultsFor": "Results for “{term}”"
+  },
+  "Search": {
+    "placeholder": "Search designers, collections, pieces…",
+    "hint": "Press Enter to search, Esc to close",
+    "close": "Close search"
   },
   "Storefront": {
     "aboutTheHouse": "About the House",

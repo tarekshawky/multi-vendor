@@ -6,14 +6,14 @@ import { SortSelect } from "@/components/storefront/SortSelect";
 import { Tag } from "@/components/ui/Tag";
 import { cn } from "@/lib/cn";
 
-type SearchParams = { category?: string; sort?: string };
+type SearchParams = { category?: string; sort?: string; q?: string };
 
 export default async function CollectionsPage({
   searchParams,
 }: {
   searchParams: Promise<SearchParams>;
 }) {
-  const { category, sort } = await searchParams;
+  const { category, sort, q } = await searchParams;
   const t = await getTranslations("Collections");
 
   const categories = await prisma.product.findMany({
@@ -29,8 +29,22 @@ export default async function CollectionsPage({
         ? { price: "desc" as const }
         : { createdAt: "desc" as const };
 
+  const searchTerm = q?.trim();
+
   const products = await prisma.product.findMany({
-    where: category ? { category } : undefined,
+    where: {
+      ...(category ? { category } : {}),
+      ...(searchTerm
+        ? {
+            OR: [
+              { name: { contains: searchTerm, mode: "insensitive" } },
+              { description: { contains: searchTerm, mode: "insensitive" } },
+              { category: { contains: searchTerm, mode: "insensitive" } },
+              { vendor: { brandName: { contains: searchTerm, mode: "insensitive" } } },
+            ],
+          }
+        : {}),
+    },
     orderBy,
     include: { vendor: { select: { brandName: true } } },
     take: 24,
@@ -39,7 +53,14 @@ export default async function CollectionsPage({
   return (
     <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-section-gap">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12 pt-8">
-        <h1 className="font-display text-headline-lg text-primary">{t("title")}</h1>
+        <div>
+          <h1 className="font-display text-headline-lg text-primary">{t("title")}</h1>
+          {searchTerm && (
+            <p className="font-body-md text-on-surface-variant mt-2">
+              {t("searchResultsFor", { term: searchTerm })}
+            </p>
+          )}
+        </div>
         <div className="w-full md:w-64">
           <SortSelect
             ariaLabel={t("sortLabel")}

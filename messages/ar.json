@@ -29,7 +29,13 @@
     "sortPriceAsc": "السعر: من الأقل للأعلى",
     "sortPriceDesc": "السعر: من الأعلى للأقل",
     "allCategories": "الكل",
-    "empty": "لا توجد قطع مطابقة لهذا الاختيار بعد."
+    "empty": "لا توجد قطع مطابقة لهذا الاختيار بعد.",
+    "searchResultsFor": "نتائج البحث عن “{term}”"
+  },
+  "Search": {
+    "placeholder": "ابحثي عن مصممين أو مجموعات أو قطع…",
+    "hint": "اضغطي Enter للبحث، أو Esc للإغلاق",
+    "close": "إغلاق البحث"
   },
   "Storefront": {
     "aboutTheHouse": "عن الدار",

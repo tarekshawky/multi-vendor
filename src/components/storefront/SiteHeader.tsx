@@ -6,6 +6,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { Icon } from "@/components/ui/icons/Icon";
 import { CountBadge } from "@/components/ui/Badge";
+import { SearchOverlay } from "@/components/storefront/SearchOverlay";
 import { cn } from "@/lib/cn";
 
 const navItems = [
@@ -41,6 +42,7 @@ export function SiteHeader() {
   const t = useTranslations("Nav");
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   return (
     <>
@@ -72,7 +74,12 @@ export function SiteHeader() {
         </div>
         <div className="flex items-center gap-6">
           <LocaleSwitcher />
-          <button aria-label={t("search")} className="text-primary hover:opacity-70 transition-opacity duration-500">
+          <button
+            type="button"
+            aria-label={t("search")}
+            onClick={() => setSearchOpen(true)}
+            className="text-primary hover:opacity-70 transition-opacity duration-500"
+          >
             <Icon name="search" weight={300} />
           </button>
           <Link href="/login" aria-label={t("profile")} className="text-primary hover:opacity-70 transition-opacity duration-500">
@@ -90,9 +97,14 @@ export function SiteHeader() {
         <Link href="/" className="font-display text-headline-sm text-primary tracking-tighter">
           VOGUE-CHIC
         </Link>
-        <button aria-label={t("menu")} onClick={() => setMenuOpen((v) => !v)} className="text-primary">
-          <Icon name={menuOpen ? "close" : "menu"} />
-        </button>
+        <div className="flex items-center gap-5">
+          <button type="button" aria-label={t("search")} onClick={() => setSearchOpen(true)} className="text-primary">
+            <Icon name="search" />
+          </button>
+          <button aria-label={t("menu")} onClick={() => setMenuOpen((v) => !v)} className="text-primary">
+            <Icon name={menuOpen ? "close" : "menu"} />
+          </button>
+        </div>
       </header>
 
       {menuOpen && (
@@ -110,6 +122,8 @@ export function SiteHeader() {
           <LocaleSwitcher className="pt-6 border-t border-outline-variant/30" />
         </div>
       )}
+
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 }
