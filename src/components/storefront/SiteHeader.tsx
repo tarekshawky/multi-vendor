@@ -64,9 +64,73 @@ export function SiteHeader() {
 
   return (
     <>
-      {/* Desktop header */}
-      <header className="hidden md:flex bg-surface/80 backdrop-blur-xl fixed top-0 w-full z-50 justify-between items-center px-margin-desktop py-unit max-w-container-max mx-auto border-b border-outline-variant/30 duration-500 ease-in-out">
-        <nav className="flex gap-8">
+      {/* Tablet header (md–lg): the desktop header's absolutely-centered
+          logo has no reserved space, so nav links collide with it once the
+          row gets tight — verified broken as late as 1024px. Give tablet
+          its own two-row layout instead: logo left + icons right on top,
+          nav wrapped and centered underneath in a smaller size. */}
+      <header className="hidden md:flex 2xl:hidden flex-col bg-surface/80 backdrop-blur-xl fixed top-0 w-full z-50 px-margin-desktop py-4 max-w-container-max mx-auto border-b border-outline-variant/30 gap-4 duration-500 ease-in-out">
+        <div className="flex justify-between items-center">
+          <Link
+            href="/"
+            className="font-display text-headline-sm text-primary tracking-tighter hover:opacity-70 transition-opacity duration-500 cursor-pointer"
+          >
+            VOGUE-CHIC
+          </Link>
+          <div className="flex items-center gap-5">
+            <LocaleSwitcher />
+            <button
+              type="button"
+              aria-label={t("search")}
+              onClick={() => setSearchOpen(true)}
+              className="text-primary hover:opacity-70 transition-opacity duration-500"
+            >
+              <Icon name="search" weight={300} />
+            </button>
+            <Link href={profileHref} aria-label={t("profile")} className="text-primary hover:opacity-70 transition-opacity duration-500">
+              <Icon name="person" weight={300} />
+            </Link>
+            <button
+              type="button"
+              aria-label={t("bag")}
+              onClick={openCart}
+              className="relative text-primary hover:opacity-70 transition-opacity duration-500"
+            >
+              <Icon name="shopping_bag" weight={300} />
+              <CountBadge count={totalCount} />
+            </button>
+          </div>
+        </div>
+        <nav className="flex flex-wrap justify-center gap-5">
+          {navItems.map((item) => (
+            <Link
+              key={item.key}
+              href={item.href}
+              className={cn(
+                "font-label-caps text-[10px] uppercase tracking-widest transition-colors duration-300",
+                pathname === item.href
+                  ? "text-primary border-b border-primary pb-1"
+                  : "text-on-surface-variant hover:text-primary",
+              )}
+            >
+              {t(item.key)}
+            </Link>
+          ))}
+        </nav>
+      </header>
+
+      {/* Desktop header (2xl+ only). Uses a 3-column grid instead of an
+          absolutely-positioned centered logo, but the nav's rendered width
+          (~550px) only comfortably fits once the row's side columns reach
+          their stable share of the 1440px container cap — anywhere below
+          that (down through 1280px) the columns are still narrower than
+          the container's max, so the nav can overflow into the logo's
+          column (a flex/grid min-width:auto quirk) even though nothing
+          here is absolutely positioned anymore. Waiting for 2xl guarantees
+          the container is already saturated at 1440px before this layout
+          is used, instead of chasing a flaky pixel-perfect threshold. */}
+      <header className="hidden 2xl:grid grid-cols-[1fr_auto_1fr] bg-surface/80 backdrop-blur-xl fixed top-0 w-full z-50 items-center px-margin-desktop py-unit max-w-container-max mx-auto border-b border-outline-variant/30 duration-500 ease-in-out">
+        <nav className="flex gap-8 justify-self-start">
           {navItems.map((item) => (
             <Link
               key={item.key}
@@ -82,15 +146,13 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <div className="absolute start-1/2 -translate-x-1/2">
-          <Link
-            href="/"
-            className="font-display text-headline-lg text-primary tracking-tighter hover:opacity-70 transition-opacity duration-500 cursor-pointer"
-          >
-            VOGUE-CHIC
-          </Link>
-        </div>
-        <div className="flex items-center gap-6">
+        <Link
+          href="/"
+          className="justify-self-center font-display text-headline-lg text-primary tracking-tighter hover:opacity-70 transition-opacity duration-500 cursor-pointer"
+        >
+          VOGUE-CHIC
+        </Link>
+        <div className="flex items-center gap-6 justify-self-end">
           <LocaleSwitcher />
           <button
             type="button"
