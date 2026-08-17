@@ -3,6 +3,7 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import type { PaymentMethod } from "@/generated/prisma/client";
 
 export type CheckoutLineInput = {
   productId: string;
@@ -11,9 +12,14 @@ export type CheckoutLineInput = {
   size?: string;
 };
 
+export type CheckoutPaymentInput = {
+  method: PaymentMethod;
+  cardLast4?: string;
+};
+
 export type CheckoutResult =
   | { ok: true; orderNumbers: string[] }
-  | { ok: false; error: "unauthenticated" | "empty" | "invalid" };
+  | { ok: false; error: "unauthenticated" | "empty" | "invalid" | "invalidPayment" };
 
 async function generateOrderNumber() {
   let orderNumber: string;
@@ -25,13 +31,22 @@ async function generateOrderNumber() {
   return orderNumber;
 }
 
-export async function checkoutCart(lines: CheckoutLineInput[]): Promise<CheckoutResult> {
+export async function checkoutCart(
+  lines: CheckoutLineInput[],
+  payment: CheckoutPaymentInput,
+): Promise<CheckoutResult> {
   const session = await auth();
   if (!session?.user) {
     return { ok: false, error: "unauthenticated" };
   }
   if (!lines.length) {
     return { ok: false, error: "empty" };
+  }
+  if (!["CARD", "COD", "WALLET"].includes(payment.method)) {
+    return { ok: false, error: "invalidPayment" };
+  }
+  if (payment.method === "CARD" && !/^\d{4}$/.test(payment.cardLast4 ?? "")) {
+    return { ok: false, error: "invalidPayment" };
   }
 
   const productIds = lines.map((l) => l.productId);
@@ -53,6 +68,13 @@ export async function checkoutCart(lines: CheckoutLineInput[]): Promise<Checkout
 
   const orderNumbers: string[] = [];
 
+  const paymentNote =
+    payment.method === "CARD"
+      ? `Order placed — paid by card ending ${payment.cardLast4}`
+      : payment.method === "COD"
+        ? "Order placed — cash on delivery"
+        : "Order placed — mobile wallet (Egypt)";
+
   for (const [vendorId, group] of groupedByVendor) {
     const subtotal = group.reduce((sum, { line, product }) => sum + Number(product.price) * line.qty, 0);
     const tax = Math.round(subtotal * 0.08 * 100) / 100;
@@ -71,6 +93,8 @@ export async function checkoutCart(lines: CheckoutLineInput[]): Promise<Checkout
         tax,
         total,
         currency,
+        paymentMethod: payment.method,
+        paymentMethodLast4: payment.method === "CARD" ? payment.cardLast4 : null,
         items: {
           create: group.map(({ line, product }) => ({
             productId: product.id,
@@ -83,7 +107,7 @@ export async function checkoutCart(lines: CheckoutLineInput[]): Promise<Checkout
           })),
         },
         historyEvents: {
-          create: [{ status: "PENDING", note: "Order placed" }],
+          create: [{ status: "PENDING", note: paymentNote }],
         },
       },
     });

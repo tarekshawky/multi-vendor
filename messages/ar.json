@@ -58,7 +58,16 @@
     "continueShopping": "متابعة التسوق",
     "remove": "إزالة العنصر",
     "increase": "زيادة الكمية",
-    "decrease": "إنقاص الكمية"
+    "decrease": "إنقاص الكمية",
+    "paymentMethodTitle": "طريقة الدفع",
+    "paymentCard": "فيزا / بطاقة",
+    "paymentCOD": "الدفع عند الاستلام",
+    "paymentWallet": "محفظة إلكترونية (مصر)",
+    "cardLast4Label": "رقم البطاقة (آخر 4 أرقام)",
+    "cardLast4Placeholder": "مثال: 4242",
+    "cardLast4Error": "أدخلي آخر 4 أرقام من بطاقتك.",
+    "back": "رجوع",
+    "placeOrder": "تأكيد الطلب"
   },
   "Storefront": {
     "aboutTheHouse": "عن الدار",
@@ -208,7 +217,11 @@
     "shipping": "الشحن",
     "tax": "الضريبة",
     "total": "الإجمالي",
-    "cardEnding": "بطاقة تنتهي بـ {last4}"
+    "cardEnding": "بطاقة تنتهي بـ {last4}",
+    "paymentMethod": "طريقة الدفع",
+    "paymentMethodCARD": "فيزا / بطاقة",
+    "paymentMethodCOD": "الدفع عند الاستلام",
+    "paymentMethodWALLET": "محفظة إلكترونية (مصر)"
   },
   "VendorCustomers": {
     "title": "العملاء",
@@ -531,6 +544,22 @@
     "passwordTooShort": "يجب ألا تقل كلمة المرور الجديدة عن 8 أحرف.",
     "passwordMismatch": "كلمة المرور الجديدة والتأكيد غير متطابقين.",
     "incorrectPassword": "كلمة المرور الحالية غير صحيحة.",
-    "genericError": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+    "genericError": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "title": "حسابي",
+    "welcome": "مرحباً بعودتك، {name}",
+    "profile": "الملف الشخصي",
+    "memberSince": "عضو منذ {date}",
+    "account": "الحساب",
+    "orderHistory": "سجل الطلبات",
+    "noOrders": "لم تقومي بأي طلبات بعد.",
+    "orderId": "الطلب",
+    "vendor": "المصمم",
+    "date": "التاريخ",
+    "paymentMethod": "الدفع",
+    "value": "الإجمالي",
+    "status": "الحالة",
+    "paymentMethodCARD": "فيزا / بطاقة",
+    "paymentMethodCOD": "الدفع عند الاستلام",
+    "paymentMethodWALLET": "محفظة إلكترونية (مصر)"
   }
 }

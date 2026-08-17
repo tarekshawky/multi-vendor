@@ -7,10 +7,18 @@ import { useSession } from "next-auth/react";
 import { useCart } from "@/components/storefront/CartContext";
 import { Icon } from "@/components/ui/icons/Icon";
 import { buttonClasses } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import { formatCurrency } from "@/lib/format";
 import { unsplash } from "@/lib/stock-images";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { checkoutCart } from "@/server/actions/checkout";
+import type { PaymentMethod } from "@/generated/prisma/client";
+
+const paymentOptions: { method: PaymentMethod; icon: string; labelKey: "paymentCard" | "paymentCOD" | "paymentWallet" }[] = [
+  { method: "CARD", icon: "credit_card", labelKey: "paymentCard" },
+  { method: "COD", icon: "local_shipping", labelKey: "paymentCOD" },
+  { method: "WALLET", icon: "account_balance_wallet", labelKey: "paymentWallet" },
+];
 
 export function CartDrawer() {
   const t = useTranslations("Cart");
@@ -18,28 +26,50 @@ export function CartDrawer() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
+  const [step, setStep] = useState<"cart" | "payment">("cart");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null);
+  const [cardLast4, setCardLast4] = useState("");
   const [checkingOut, setCheckingOut] = useState(false);
   const [confirmation, setConfirmation] = useState<string[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
-  async function handleCheckout() {
+  function handleClose() {
+    close();
+    setStep("cart");
+    setPaymentMethod(null);
+    setCardLast4("");
+    setError(null);
+  }
+
+  function handleProceedToPayment() {
     setError(null);
     if (status !== "authenticated" || !session?.user) {
-      close();
+      handleClose();
       router.push(`/login?callbackUrl=${encodeURIComponent(pathname)}`);
       return;
     }
+    setStep("payment");
+  }
 
+  const canPlaceOrder = paymentMethod === "COD" || paymentMethod === "WALLET" || (paymentMethod === "CARD" && /^\d{4}$/.test(cardLast4));
+
+  async function handlePlaceOrder() {
+    if (!paymentMethod || !canPlaceOrder) return;
+    setError(null);
     setCheckingOut(true);
     try {
       const result = await checkoutCart(
         items.map((i) => ({ productId: i.productId, qty: i.qty, color: i.color, size: i.size })),
+        { method: paymentMethod, cardLast4: paymentMethod === "CARD" ? cardLast4 : undefined },
       );
       if (result.ok) {
         setConfirmation(result.orderNumbers);
         clear();
+        setStep("cart");
+        setPaymentMethod(null);
+        setCardLast4("");
       } else {
         setError(t("checkoutError"));
       }
@@ -53,13 +83,13 @@ export function CartDrawer() {
       <button
         type="button"
         aria-label={t("close")}
-        onClick={close}
+        onClick={handleClose}
         className="absolute inset-0 bg-inverse-surface/40 backdrop-blur-sm"
       />
       <div className="relative w-full max-w-md h-screen bg-surface flex flex-col shadow-[0_0_40px_rgba(0,0,0,0.1)]">
         <div className="flex items-center justify-between px-8 py-6 border-b border-outline-variant/30">
           <h2 className="font-headline-sm text-headline-sm text-primary">{t("title")}</h2>
-          <button type="button" aria-label={t("close")} onClick={close} className="text-primary hover:opacity-70 transition-opacity">
+          <button type="button" aria-label={t("close")} onClick={handleClose} className="text-primary hover:opacity-70 transition-opacity">
             <Icon name="close" />
           </button>
         </div>
@@ -69,7 +99,7 @@ export function CartDrawer() {
             <Icon name="check_circle" size={48} className="text-primary mb-6" />
             <h3 className="font-display text-headline-sm text-primary mb-3">{t("orderPlaced")}</h3>
             <p className="text-on-surface-variant mb-6">{t("orderNumbers", { numbers: confirmation.join(", ") })}</p>
-            <button type="button" onClick={close} className={buttonClasses("primary", "md")}>
+            <button type="button" onClick={handleClose} className={buttonClasses("primary", "md")}>
               {t("continueShopping")}
             </button>
           </div>
@@ -78,6 +108,79 @@ export function CartDrawer() {
             <Icon name="shopping_bag" size={40} className="text-on-surface-variant mb-4" />
             <p className="text-on-surface-variant">{t("empty")}</p>
           </div>
+        ) : step === "payment" ? (
+          <>
+            <div className="flex-1 overflow-y-auto px-8 py-6 space-y-3">
+              <p className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-3">
+                {t("paymentMethodTitle")}
+              </p>
+              {paymentOptions.map((option) => (
+                <button
+                  key={option.method}
+                  type="button"
+                  onClick={() => setPaymentMethod(option.method)}
+                  className={`w-full flex items-center gap-4 px-4 py-4 border transition-colors duration-300 text-start ${
+                    paymentMethod === option.method
+                      ? "border-primary bg-primary text-on-primary"
+                      : "border-outline-variant/50 text-primary hover:border-primary"
+                  }`}
+                >
+                  <Icon name={option.icon} weight={300} />
+                  <span className="font-label-caps text-label-caps uppercase tracking-widest">{t(option.labelKey)}</span>
+                </button>
+              ))}
+
+              {paymentMethod === "CARD" && (
+                <div className="pt-2 space-y-2">
+                  <label className="block font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant">
+                    {t("cardLast4Label")}
+                  </label>
+                  <Input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={4}
+                    placeholder={t("cardLast4Placeholder")}
+                    value={cardLast4}
+                    onChange={(e) => setCardLast4(e.target.value.replace(/\D/g, "").slice(0, 4))}
+                    className="w-32"
+                  />
+                  {cardLast4.length > 0 && cardLast4.length < 4 && (
+                    <p className="text-error text-xs">{t("cardLast4Error")}</p>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="border-t border-outline-variant/30 px-8 py-6">
+              <div className="flex items-center justify-between mb-6">
+                <span className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">
+                  {t("subtotal")}
+                </span>
+                <span className="font-headline-sm text-headline-sm text-primary">
+                  {formatCurrency(subtotal, items[0]?.currency ?? "USD")}
+                </span>
+              </div>
+              {error && <p className="text-error text-sm mb-4">{error}</p>}
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setStep("cart")}
+                  disabled={checkingOut}
+                  className={buttonClasses("secondary", "lg")}
+                >
+                  {t("back")}
+                </button>
+                <button
+                  type="button"
+                  onClick={handlePlaceOrder}
+                  disabled={checkingOut || !canPlaceOrder}
+                  className={buttonClasses("primary", "lg", "flex-1")}
+                >
+                  {checkingOut ? t("processing") : t("placeOrder")}
+                </button>
+              </div>
+            </div>
+          </>
         ) : (
           <>
             <div className="flex-1 overflow-y-auto px-8 py-6 space-y-6">
@@ -145,11 +248,10 @@ export function CartDrawer() {
               {error && <p className="text-error text-sm mb-4">{error}</p>}
               <button
                 type="button"
-                onClick={handleCheckout}
-                disabled={checkingOut}
+                onClick={handleProceedToPayment}
                 className={buttonClasses("primary", "lg", "w-full")}
               >
-                {checkingOut ? t("processing") : t("checkout")}
+                {t("checkout")}
               </button>
             </div>
           </>

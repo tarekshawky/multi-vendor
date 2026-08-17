@@ -58,7 +58,16 @@
     "continueShopping": "Continue Shopping",
     "remove": "Remove item",
     "increase": "Increase quantity",
-    "decrease": "Decrease quantity"
+    "decrease": "Decrease quantity",
+    "paymentMethodTitle": "Payment Method",
+    "paymentCard": "Visa / Card",
+    "paymentCOD": "Cash on Delivery",
+    "paymentWallet": "Mobile Wallet (Egypt)",
+    "cardLast4Label": "Card Number (last 4 digits)",
+    "cardLast4Placeholder": "e.g. 4242",
+    "cardLast4Error": "Enter the last 4 digits of your card.",
+    "back": "Back",
+    "placeOrder": "Place Order"
   },
   "Storefront": {
     "aboutTheHouse": "About the House",
@@ -208,7 +217,11 @@
     "shipping": "Shipping",
     "tax": "Tax",
     "total": "Total",
-    "cardEnding": "Card ending in {last4}"
+    "cardEnding": "Card ending in {last4}",
+    "paymentMethod": "Payment Method",
+    "paymentMethodCARD": "Visa / Card",
+    "paymentMethodCOD": "Cash on Delivery",
+    "paymentMethodWALLET": "Mobile Wallet (Egypt)"
   },
   "VendorCustomers": {
     "title": "Customers",
@@ -531,6 +544,22 @@
     "passwordTooShort": "New password must be at least 8 characters.",
     "passwordMismatch": "New password and confirmation don't match.",
     "incorrectPassword": "Current password is incorrect.",
-    "genericError": "Something went wrong. Please try again."
+    "genericError": "Something went wrong. Please try again.",
+    "title": "My Account",
+    "welcome": "Welcome back, {name}.",
+    "profile": "Profile",
+    "memberSince": "Member since {date}",
+    "account": "Account",
+    "orderHistory": "Order History",
+    "noOrders": "You haven't placed any orders yet.",
+    "orderId": "Order",
+    "vendor": "Designer",
+    "date": "Date",
+    "paymentMethod": "Payment",
+    "value": "Total",
+    "status": "Status",
+    "paymentMethodCARD": "Visa / Card",
+    "paymentMethodCOD": "Cash on Delivery",
+    "paymentMethodWALLET": "Mobile Wallet (Egypt)"
   }
 }

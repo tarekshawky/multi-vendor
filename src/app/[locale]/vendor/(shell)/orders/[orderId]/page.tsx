@@ -135,8 +135,12 @@ export default async function OrderDetailPage({
                 <span className="text-primary">{t("total")}</span>
                 <span className="text-primary">{formatCurrency(order.total.toString(), order.currency, locale)}</span>
               </div>
-              {order.paymentMethodLast4 && (
-                <p className="text-xs text-on-surface-variant pt-2">{t("cardEnding", { last4: order.paymentMethodLast4 })}</p>
+              <div className="flex justify-between pt-2">
+                <span className="text-on-surface-variant">{t("paymentMethod")}</span>
+                <span className="text-primary">{t(`paymentMethod${order.paymentMethod}`)}</span>
+              </div>
+              {order.paymentMethod === "CARD" && order.paymentMethodLast4 && (
+                <p className="text-xs text-on-surface-variant pt-1">{t("cardEnding", { last4: order.paymentMethodLast4 })}</p>
               )}
             </div>
           </Card>

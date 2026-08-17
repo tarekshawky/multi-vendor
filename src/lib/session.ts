@@ -34,3 +34,11 @@ export async function requireWriter(locale: string) {
   }
   return { user: session!.user };
 }
+
+export async function requireUser(locale: string, callbackUrl?: string) {
+  const session = await auth();
+  if (!session?.user) {
+    redirect({ href: callbackUrl ? `/login?callbackUrl=${encodeURIComponent(callbackUrl)}` : "/login", locale });
+  }
+  return { user: session!.user };
+}

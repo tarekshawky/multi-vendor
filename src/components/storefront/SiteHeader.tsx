@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import { useSession } from "next-auth/react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { Icon } from "@/components/ui/icons/Icon";
@@ -16,6 +17,20 @@ const navItems = [
   { key: "editorial", href: "/editorial" },
   { key: "newArrivals", href: "/collections?sort=new" },
 ] as const;
+
+const roleDestinations: Record<string, string> = {
+  VENDOR: "/vendor/dashboard",
+  ADMIN: "/admin/dashboard",
+  WRITER: "/writer/dashboard",
+};
+
+function useProfileHref(pathname: string) {
+  const { data: session, status } = useSession();
+  if (status !== "authenticated" || !session?.user) {
+    return `/login?callbackUrl=${encodeURIComponent(pathname)}`;
+  }
+  return roleDestinations[session.user.role as string] ?? "/account";
+}
 
 function LocaleSwitcher({ className }: { className?: string }) {
   const locale = useLocale();
@@ -45,6 +60,7 @@ export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const { totalCount, open: openCart } = useCart();
+  const profileHref = useProfileHref(pathname);
 
   return (
     <>
@@ -84,7 +100,7 @@ export function SiteHeader() {
           >
             <Icon name="search" weight={300} />
           </button>
-          <Link href="/login" aria-label={t("profile")} className="text-primary hover:opacity-70 transition-opacity duration-500">
+          <Link href={profileHref} aria-label={t("profile")} className="text-primary hover:opacity-70 transition-opacity duration-500">
             <Icon name="person" weight={300} />
           </Link>
           <button
@@ -130,6 +146,13 @@ export function SiteHeader() {
               {t(item.key)}
             </Link>
           ))}
+          <Link
+            href={profileHref}
+            onClick={() => setMenuOpen(false)}
+            className="font-label-caps text-label-caps uppercase tracking-widest text-primary"
+          >
+            {t("profile")}
+          </Link>
           <LocaleSwitcher className="pt-6 border-t border-outline-variant/30" />
         </div>
       )}

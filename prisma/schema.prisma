@@ -35,6 +35,12 @@ enum OrderStatus {
   CANCELLED
 }
 
+enum PaymentMethod {
+  CARD
+  COD
+  WALLET
+}
+
 enum DiscountType {
   PERCENT
   FIXED
@@ -248,6 +254,7 @@ model Order {
   currency String  @default("USD")
 
   shippingAddress   Json?
+  paymentMethod      PaymentMethod @default(CARD)
   paymentMethodLast4 String?
 
   placedAt  DateTime @default(now())
