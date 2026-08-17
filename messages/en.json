@@ -386,7 +386,15 @@
     "revenue": "Revenue",
     "status": "Status",
     "suspend": "Suspend",
-    "activate": "Activate"
+    "activate": "Activate",
+    "createVendor": "Create Vendor",
+    "editVendor": "Edit Vendor",
+    "brandName": "Brand Name",
+    "tagline": "Tagline",
+    "bio": "Biography",
+    "phone": "Phone",
+    "hqAddress": "HQ Address",
+    "currency": "Currency"
   },
   "AdminOrders": {
     "title": "All Orders",
@@ -411,6 +419,30 @@
     "memberSince": "Member Since",
     "orders": "Orders",
     "totalSpend": "Total Spend",
-    "empty": "No customers yet."
+    "empty": "No customers yet.",
+    "createCustomer": "Create Customer",
+    "editCustomer": "Edit Customer",
+    "vipTier": "VIP Tier"
+  },
+  "AdminCommon": {
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "phone": "Phone",
+    "location": "Location",
+    "edit": "Edit",
+    "delete": "Delete",
+    "create": "Create",
+    "creating": "Creating…",
+    "saveChanges": "Save Changes",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "invalidInput": "Please fill in all required fields (password must be at least 8 characters).",
+    "emailTaken": "An account with this email already exists.",
+    "confirmDeleteVendor": "Delete {name}? This cannot be undone.",
+    "confirmDeleteCustomer": "Delete {name}? This cannot be undone.",
+    "confirmDeleteOrder": "Delete order #{orderNumber}? This cannot be undone.",
+    "deleteBlockedHasOrders": "Can't delete — this account has order history. Suspend it instead if you need to remove it from the platform.",
+    "deleteFailed": "Something went wrong. Please try again."
   }
 }

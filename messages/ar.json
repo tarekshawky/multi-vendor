@@ -386,7 +386,15 @@
     "revenue": "الإيرادات",
     "status": "الحالة",
     "suspend": "إيقاف",
-    "activate": "تفعيل"
+    "activate": "تفعيل",
+    "createVendor": "إضافة تاجر",
+    "editVendor": "تعديل التاجر",
+    "brandName": "اسم العلامة التجارية",
+    "tagline": "الشعار",
+    "bio": "نبذة",
+    "phone": "الهاتف",
+    "hqAddress": "عنوان المقر الرئيسي",
+    "currency": "العملة"
   },
   "AdminOrders": {
     "title": "جميع الطلبات",
@@ -411,6 +419,30 @@
     "memberSince": "عضو منذ",
     "orders": "الطلبات",
     "totalSpend": "إجمالي الإنفاق",
-    "empty": "لا يوجد عملاء بعد."
+    "empty": "لا يوجد عملاء بعد.",
+    "createCustomer": "إضافة عميل",
+    "editCustomer": "تعديل العميل",
+    "vipTier": "فئة العضوية"
+  },
+  "AdminCommon": {
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "phone": "الهاتف",
+    "location": "الموقع",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "create": "إنشاء",
+    "creating": "جارٍ الإنشاء…",
+    "saveChanges": "حفظ التغييرات",
+    "saving": "جارٍ الحفظ…",
+    "saved": "تم الحفظ.",
+    "invalidInput": "يرجى تعبئة جميع الحقول المطلوبة (يجب ألا تقل كلمة المرور عن 8 أحرف).",
+    "emailTaken": "يوجد حساب بهذا البريد الإلكتروني بالفعل.",
+    "confirmDeleteVendor": "حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+    "confirmDeleteCustomer": "حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+    "confirmDeleteOrder": "حذف الطلب #{orderNumber}؟ لا يمكن التراجع عن هذا الإجراء.",
+    "deleteBlockedHasOrders": "تعذر الحذف — لهذا الحساب سجل طلبات. أوقفه مؤقتاً بدلاً من ذلك إذا أردت إزالته من المنصة.",
+    "deleteFailed": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
   }
 }

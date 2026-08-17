@@ -4,6 +4,8 @@ import { Link } from "@/i18n/navigation";
 import { Tag } from "@/components/ui/Tag";
 import { DataTable, type Column } from "@/components/ui/DataTable";
 import { StatusPill } from "@/components/ui/StatusPill";
+import { DeleteButton } from "@/components/admin/DeleteButton";
+import { deleteOrder } from "@/server/actions/admin";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { orderStatusTone } from "@/lib/status-tone";
 import type { OrderStatus } from "@/generated/prisma/client";
@@ -29,6 +31,7 @@ export default async function AdminOrdersPage({
   const { locale } = await params;
   const { status } = await searchParams;
   const t = await getTranslations("AdminOrders");
+  const tc = await getTranslations("AdminCommon");
 
   const statusFilter = status && status !== "ALL" ? (status as OrderStatus) : undefined;
 
@@ -51,7 +54,15 @@ export default async function AdminOrdersPage({
   }));
 
   const columns: Column<OrderRow>[] = [
-    { key: "orderNumber", header: t("orderId"), render: (r) => `#${r.orderNumber}` },
+    {
+      key: "orderNumber",
+      header: t("orderId"),
+      render: (r) => (
+        <Link href={`/admin/orders/${r.id}`} className="text-primary hover:underline">
+          #{r.orderNumber}
+        </Link>
+      ),
+    },
     { key: "vendor", header: t("vendor"), render: (r) => r.vendorName },
     { key: "customer", header: t("customer"), render: (r) => r.customerName },
     { key: "date", header: t("date"), render: (r) => formatDate(r.placedAt, locale) },
@@ -61,6 +72,18 @@ export default async function AdminOrdersPage({
       header: t("status"),
       align: "end",
       render: (r) => <StatusPill label={r.status} tone={orderStatusTone(r.status)} />,
+    },
+    {
+      key: "actions",
+      header: "",
+      align: "end",
+      render: (r) => (
+        <DeleteButton
+          id={r.id}
+          action={deleteOrder}
+          confirmMessage={tc("confirmDeleteOrder", { orderNumber: r.orderNumber })}
+        />
+      ),
     },
   ];
 

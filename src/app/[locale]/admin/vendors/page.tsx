@@ -4,7 +4,10 @@ import { Link } from "@/i18n/navigation";
 import { Avatar } from "@/components/ui/Avatar";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { DataTable, type Column } from "@/components/ui/DataTable";
+import { buttonClasses } from "@/components/ui/Button";
 import { VendorStatusToggle } from "@/components/admin/VendorStatusToggle";
+import { DeleteButton } from "@/components/admin/DeleteButton";
+import { deleteVendor } from "@/server/actions/admin";
 import { formatCurrency } from "@/lib/format";
 import { vendorStatusTone } from "@/lib/status-tone";
 import type { VendorStatus } from "@/generated/prisma/client";
@@ -28,6 +31,7 @@ export default async function AdminVendorsPage({
 }) {
   const { locale } = await params;
   const t = await getTranslations("AdminVendors");
+  const tc = await getTranslations("AdminCommon");
 
   const vendors = await prisma.vendorProfile.findMany({
     orderBy: { createdAt: "desc" },
@@ -73,13 +77,33 @@ export default async function AdminVendorsPage({
       key: "actions",
       header: "",
       align: "end",
-      render: (r) => <VendorStatusToggle vendorId={r.id} status={r.status} />,
+      render: (r) => (
+        <div className="flex items-center justify-end gap-4">
+          <Link
+            href={`/admin/vendors/${r.id}/edit`}
+            className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors"
+          >
+            {tc("edit")}
+          </Link>
+          <VendorStatusToggle vendorId={r.id} status={r.status} />
+          <DeleteButton
+            id={r.id}
+            action={deleteVendor}
+            confirmMessage={tc("confirmDeleteVendor", { name: r.brandName })}
+          />
+        </div>
+      ),
     },
   ];
 
   return (
     <div className="px-margin-mobile md:px-margin-desktop py-12 max-w-container-max">
-      <h1 className="font-display text-headline-lg text-primary mb-12">{t("title")}</h1>
+      <div className="flex items-center justify-between mb-12">
+        <h1 className="font-display text-headline-lg text-primary">{t("title")}</h1>
+        <Link href="/admin/vendors/new" className={buttonClasses("primary", "md")}>
+          {t("createVendor")}
+        </Link>
+      </div>
       <div className="bg-surface-container-lowest border border-outline-variant/20 p-8">
         <DataTable columns={columns} rows={rows} rowKey={(r) => r.id} />
       </div>

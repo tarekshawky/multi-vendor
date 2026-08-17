@@ -1,32 +1,34 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { requireVendor } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { Card } from "@/components/ui/Card";
 import { OrderStatusUpdate } from "@/components/orders/OrderStatusUpdate";
-import { updateOrderStatus } from "@/server/actions/orders";
+import { DeleteButton } from "@/components/admin/DeleteButton";
+import { updateOrderStatusAdmin, deleteOrder } from "@/server/actions/admin";
 import { formatCurrency, formatDateTime } from "@/lib/format";
 import { orderStatusTone } from "@/lib/status-tone";
 import { unsplash } from "@/lib/stock-images";
 
 type ShippingAddress = { name?: string; line1?: string; city?: string; state?: string; zip?: string; country?: string };
 
-export default async function OrderDetailPage({
+export default async function AdminOrderDetailPage({
   params,
 }: {
-  params: Promise<{ locale: string; orderId: string }>;
+  params: Promise<{ locale: string; id: string }>;
 }) {
-  const { locale, orderId } = await params;
-  const { vendor } = await requireVendor(locale);
+  const { locale, id } = await params;
   const t = await getTranslations("OrderDetail");
+  const ta = await getTranslations("AdminOrders");
+  const tc = await getTranslations("AdminCommon");
 
-  const order = await prisma.order.findFirst({
-    where: { id: orderId, vendorId: vendor.id },
+  const order = await prisma.order.findUnique({
+    where: { id },
     include: {
       customer: { select: { name: true, email: true, customerProfile: { select: { phone: true } } } },
+      vendor: { select: { brandName: true } },
       items: true,
       historyEvents: { orderBy: { createdAt: "asc" } },
     },
@@ -38,19 +40,27 @@ export default async function OrderDetailPage({
 
   return (
     <div className="px-margin-mobile md:px-margin-desktop py-12 max-w-container-max">
-      <Breadcrumb items={[{ label: t("orders"), href: "/vendor/orders" }, { label: `#${order.orderNumber}` }]} />
+      <Breadcrumb items={[{ label: ta("title"), href: "/admin/orders" }, { label: `#${order.orderNumber}` }]} />
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-6 mb-12">
         <div className="flex items-center gap-4">
           <h1 className="font-display text-headline-lg text-primary">#{order.orderNumber}</h1>
           <StatusPill label={order.status} tone={orderStatusTone(order.status)} />
         </div>
-        <OrderStatusUpdate
-          orderId={order.id}
-          currentStatus={order.status}
-          action={updateOrderStatus}
-          labels={{ status: t("status"), note: t("note"), update: t("updateStatus") }}
-        />
+        <div className="flex items-center gap-4">
+          <OrderStatusUpdate
+            orderId={order.id}
+            currentStatus={order.status}
+            action={updateOrderStatusAdmin}
+            labels={{ status: t("status"), note: t("note"), update: t("updateStatus") }}
+          />
+          <DeleteButton
+            id={order.id}
+            action={deleteOrder}
+            redirectTo="/admin/orders"
+            confirmMessage={tc("confirmDeleteOrder", { orderNumber: order.orderNumber })}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
@@ -97,6 +107,11 @@ export default async function OrderDetailPage({
         </div>
 
         <div className="space-y-8">
+          <Card>
+            <h2 className="font-headline-sm text-headline-sm text-primary mb-4">{ta("vendor")}</h2>
+            <p className="font-body-md text-primary">{order.vendor.brandName}</p>
+          </Card>
+
           <Card>
             <h2 className="font-headline-sm text-headline-sm text-primary mb-4">{t("customer")}</h2>
             <p className="font-body-md text-primary">{order.customer.name}</p>

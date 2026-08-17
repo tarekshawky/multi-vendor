@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { updateOrderStatus } from "@/server/actions/orders";
+import { useRouter } from "@/i18n/navigation";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
 
@@ -9,11 +9,13 @@ type OrderStatusUpdateProps = {
   orderId: string;
   currentStatus: string;
   labels: { status: string; note: string; update: string };
+  action: (orderId: string, formData: FormData) => Promise<void>;
 };
 
 const STATUSES = ["PENDING", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"];
 
-export function OrderStatusUpdate({ orderId, currentStatus, labels }: OrderStatusUpdateProps) {
+export function OrderStatusUpdate({ orderId, currentStatus, labels, action }: OrderStatusUpdateProps) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
@@ -22,8 +24,9 @@ export function OrderStatusUpdate({ orderId, currentStatus, labels }: OrderStatu
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     startTransition(async () => {
-      await updateOrderStatus(orderId, formData);
+      await action(orderId, formData);
       setOpen(false);
+      router.refresh();
     });
   }
 
