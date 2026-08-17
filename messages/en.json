@@ -324,5 +324,10 @@
     "updatePassword": "Update Password",
     "partnerSupport": "Partner Support",
     "partnerSupportCopy": "Reach our concierge team for onboarding help or platform questions."
+  },
+  "Editorial": {
+    "title": "Editorial",
+    "subtitle": "Stories from the ateliers — the ideas, textures, and craft behind each collection.",
+    "empty": "No editorial stories published yet."
   }
 }
