@@ -1,11 +1,55 @@
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
+import { prisma } from "@/lib/prisma";
 import { Link } from "@/i18n/navigation";
 import { buttonClasses } from "@/components/ui/Button";
+import { ProductCard } from "@/components/storefront/ProductCard";
 import { stockImages, unsplash } from "@/lib/stock-images";
+import { formatDate } from "@/lib/format";
 
-export default function HomePage() {
-  const t = useTranslations("Home");
+function sectionHeader(title: string, cta: string, href: string) {
+  return (
+    <div className="flex items-center justify-between mb-12">
+      <h2 className="font-display text-headline-lg text-primary">{title}</h2>
+      <Link
+        href={href}
+        className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap ms-6"
+      >
+        {cta}
+      </Link>
+    </div>
+  );
+}
+
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations("Home");
+
+  const [newArrivals, categories, designers, stories] = await Promise.all([
+    prisma.product.findMany({
+      where: { vendor: { status: "ACTIVE" } },
+      orderBy: { createdAt: "desc" },
+      include: { vendor: { select: { brandName: true } } },
+      take: 4,
+    }),
+    prisma.product.findMany({
+      where: { category: { not: null }, vendor: { status: "ACTIVE" } },
+      select: { category: true },
+      distinct: ["category"],
+      take: 5,
+    }),
+    prisma.vendorProfile.findMany({
+      where: { status: "ACTIVE" },
+      orderBy: { brandName: "asc" },
+      take: 2,
+    }),
+    prisma.story.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: { publishedAt: "desc" },
+      include: { author: { select: { name: true } } },
+      take: 3,
+    }),
+  ]);
 
   return (
     <>
@@ -33,6 +77,94 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
+
+      {newArrivals.length > 0 && (
+        <section className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-section-gap">
+          {sectionHeader(t("newArrivalsTitle"), t("newArrivalsCta"), "/collections")}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-12 md:gap-x-gutter">
+            {newArrivals.map((product) => (
+              <ProductCard
+                key={product.id}
+                slug={product.slug}
+                name={product.name}
+                price={product.price.toString()}
+                currency={product.currency}
+                image={product.images[0]}
+                vendorName={product.vendor.brandName}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {categories.length > 0 && (
+        <section className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-section-gap">
+          <h2 className="font-display text-headline-lg text-primary mb-12">{t("shopByCategoryTitle")}</h2>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            {categories.map((c) => (
+              <Link
+                key={c.category}
+                href={`/collections?category=${encodeURIComponent(c.category!)}`}
+                className="group border border-outline-variant/30 hover:border-primary transition-colors flex items-center justify-center py-12 px-4 text-center"
+              >
+                <span className="font-label-caps text-label-caps uppercase tracking-widest text-primary">
+                  {c.category}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {designers.length > 0 && (
+        <section className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-section-gap">
+          {sectionHeader(t("featuredDesignersTitle"), t("featuredDesignersCta"), "/designers")}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+            {designers.map((vendor) => (
+              <Link key={vendor.id} href={`/designers/${vendor.slug}`} className="group block">
+                <div className="relative aspect-[16/9] overflow-hidden bg-surface-container-high mb-4">
+                  <Image
+                    src={unsplash(vendor.heroImage ?? stockImages.boutiqueInterior, { w: 1200 })}
+                    alt={vendor.brandName}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
+                <h3 className="font-headline-sm text-headline-sm text-primary">{vendor.brandName}</h3>
+                {vendor.tagline && <p className="font-body-md text-on-surface-variant mt-1">{vendor.tagline}</p>}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {stories.length > 0 && (
+        <section className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-section-gap">
+          {sectionHeader(t("fromTheEditTitle"), t("fromTheEditCta"), "/editorial")}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+            {stories.map((story) => (
+              <Link key={story.id} href={`/editorial/${story.slug}`} className="group block">
+                <div className="relative aspect-[4/5] overflow-hidden bg-surface-container-high mb-4">
+                  <Image
+                    src={unsplash(story.coverImage ?? stockImages.boutiqueInterior, { w: 900 })}
+                    alt={story.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
+                <p className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-2">
+                  {story.author.name}
+                  {story.publishedAt && <> · {formatDate(story.publishedAt, locale)}</>}
+                </p>
+                <h3 className="font-headline-sm text-headline-sm text-primary mb-2">{story.title}</h3>
+                {story.excerpt && <p className="font-body-md text-on-surface-variant line-clamp-2">{story.excerpt}</p>}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </>
   );
 }

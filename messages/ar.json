@@ -20,7 +20,14 @@
   "Home": {
     "heroTitle": "الصورة الجديدة",
     "heroDescription": "احتضني أجرأ القصات المعمارية والخامات الراقية لهذا الموسم. تشكيلة مختارة بعناية للمتطلبين المعاصرين.",
-    "heroCta": "تسوقي الموسم الجديد"
+    "heroCta": "تسوقي الموسم الجديد",
+    "newArrivalsTitle": "وصل حديثاً",
+    "newArrivalsCta": "تسوقي الكل",
+    "shopByCategoryTitle": "تسوقي حسب الفئة",
+    "featuredDesignersTitle": "مصممون مختارون",
+    "featuredDesignersCta": "عرض جميع المصممين",
+    "fromTheEditTitle": "من الافتتاحية",
+    "fromTheEditCta": "قراءة المزيد"
   },
   "Collections": {
     "title": "اكتشفي المجموعات",

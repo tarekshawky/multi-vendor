@@ -20,7 +20,14 @@
   "Home": {
     "heroTitle": "The New Silhouette",
     "heroDescription": "Embrace the season's boldest architectural cuts and refined textures. A curated selection for the modern purist.",
-    "heroCta": "Shop New Season"
+    "heroCta": "Shop New Season",
+    "newArrivalsTitle": "New Arrivals",
+    "newArrivalsCta": "Shop All",
+    "shopByCategoryTitle": "Shop by Category",
+    "featuredDesignersTitle": "Featured Designers",
+    "featuredDesignersCta": "View All Designers",
+    "fromTheEditTitle": "From the Edit",
+    "fromTheEditCta": "Read More"
   },
   "Collections": {
     "title": "Discover Collections",
